@@ -152,7 +152,6 @@ sudo chown "$USER":staff /var/log/fpm7.0-php.www.log
 echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb
-mysql.server start
 brew services start mariadb
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Installing DNSmasq.${txtreset}"
