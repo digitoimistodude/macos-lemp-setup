@@ -46,4 +46,6 @@ server {
 }
 ````
 
+For mysql, remember to run `mysql_secure_installation`.
 
+After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports OS X LEMP stack.

@@ -154,7 +154,6 @@ echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb
 mysql.server start
 brew services start mariadb
-mysql_secure_installation
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Installing DNSmasq.${txtreset}"
 brew install dnsmasq
@@ -175,4 +174,3 @@ sudo brew services stop mariadb
 sudo brew services start mariadb
 sudo brew services list
 echo "${boldgreen}You should now be able to use http://localhost. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
-
