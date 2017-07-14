@@ -32,9 +32,7 @@ sudo ln -sfnv /usr/local/etc/nginx /etc/nginx
 sudo mkdir -p /etc/nginx/sites-enabled
 sudo mkdir -p /etc/nginx/sites-available
 sudo mkdir -p /etc/nginx/global
-sudo echo "#user rolle;
-#pid /run/nginx.pid;  
-worker_processes 8;
+sudo echo "worker_processes 8;
   
 events {  
         multi_accept on;
@@ -82,8 +80,7 @@ http {
         ##
         
         include /etc/nginx/sites-enabled/*;
-}
-" > "/etc/nginx/nginx.conf"
+}" > "/etc/nginx/nginx.conf"
 sudo echo "location ~ \.php\$ {
   proxy_intercept_errors on;
   try_files \$uri /index.php;
