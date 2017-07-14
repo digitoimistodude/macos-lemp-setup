@@ -166,7 +166,7 @@ sudo brew services stop nginx
 sudo brew services start nginx
 sudo brew services stop php70
 sudo brew services start php70
-sudo brew services stop mariadb
-sudo brew services start mariadb
+brew services stop mariadb
+brew services start mariadb
 sudo brew services list
 echo "${boldgreen}You should now be able to use http://localhost. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
