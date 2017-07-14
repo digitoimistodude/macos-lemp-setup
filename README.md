@@ -3,7 +3,7 @@
 For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner (if wget is not installed, run `brew install wget` first):
 
 ```` bash
-wget -O - https://raw.githubusercontent.com/digitoimistodude/setup/master/install.sh | bash
+wget -O - https://raw.githubusercontent.com/digitoimistodude/osx-lemp-setup/master/install.sh | bash
 ````
 
 **Please note:** Don't trust blindly to the script, use only if you know what you are doing. You can view the file [here](https://github.com/digitoimistodude/osx-lemp-setup/blob/master/install.sh) if having doubts what commands are being run. However, script is tested working many times and should be safe to run even if you have some or all of the components already installed.
