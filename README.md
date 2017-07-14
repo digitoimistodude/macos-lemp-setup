@@ -10,7 +10,7 @@ wget -O - https://raw.githubusercontent.com/digitoimistodude/setup/master/instal
 
 ### Background
 
-Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): [Moving from Vagrant to a LEMP stack directly on a Macbook Pro (for WordPress development)](https://medium.com/@rolle/moving-from-vagrant-to-a-lemp-stack-directly-on-a-macbook-pro-e935b1bc5a38)
+Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): **[Moving from Vagrant to a LEMP stack directly on a Macbook Pro (for WordPress development)](https://medium.com/@rolle/moving-from-vagrant-to-a-lemp-stack-directly-on-a-macbook-pro-e935b1bc5a38)**
 
 ### Dependencies
 
