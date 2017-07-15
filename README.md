@@ -49,3 +49,19 @@ server {
 For mysql, remember to run `mysql_secure_installation`.
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports OS X LEMP stack.
+
+You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.dev`. Also, consider adding these bash aliases for easy stopping and starting services:
+
+```` bash
+alias nginx.start='sudo brew services start nginx'
+alias nginx.stop='sudo brew services stop nginx'
+alias nginx.restart='nginx.stop && nginx.start'
+alias php-fpm.start='sudo brew services start php70'
+alias php-fpm.stop='sudo brew services stop php70'
+alias php-fpm.restart='php-fpm.stop && php-fpm.start'
+alias mysql.start='brew services start mariadb'
+alias mysql.stop='brew services stop mariadb'
+alias mysql.restart='mysql.stop && mysql.start'
+alias localserver.stop='mysql.stop && nginx.stop && php-fpm.stop'
+alias localserver.start='mysql.start && nginx.start && php-fpm.start'
+````
