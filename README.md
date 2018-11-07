@@ -46,9 +46,33 @@ server {
 }
 ````
 
-For mysql, remember to run `mysql_secure_installation`.
+Default my.cnf would be something like this (already added by install.sh in `/usr/local/etc/my.cnf`:
 
-After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports OS X LEMP stack.
+````
+#
+# This group is read both both by the client and the server
+# use it for options that affect everything
+#
+[client-server]
+
+#
+# include all files from the config directory
+#
+!includedir /usr/local/etc/my.cnf.d
+
+[mysqld]
+innodb_log_file_size = 32M
+innodb_buffer_pool_size = 1024M
+innodb_log_buffer_size = 4M
+slow_query_log = 1
+query_cache_limit = 512K
+query_cache_size = 128M
+skip-name-resolve
+````
+
+For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
+
+After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
 You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.dev`. Also, consider adding these bash aliases for easy stopping and starting services:
 

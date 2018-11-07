@@ -28,10 +28,18 @@ sudo brew services start nginx
 curl -IL http://127.0.0.1:8080
 echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
+sudo chmod -R 775 /usr/local/etc/nginx
 sudo ln -sfnv /usr/local/etc/nginx /etc/nginx
+sudo mkdir -p /etc/nginx/global
+sudo mkdir -p /usr/local/etc/nginx
 sudo mkdir -p /etc/nginx/sites-enabled
 sudo mkdir -p /etc/nginx/sites-available
 sudo mkdir -p /etc/nginx/global
+sudo chmod -R 775 /etc/nginx/global
+sudo chmod -R 775 /usr/local/etc/nginx
+sudo chmod -R 775 /etc/nginx/sites-enabled
+sudo chmod -R 775 /etc/nginx/sites-available
+sudo chmod -R 775 /etc/nginx/global
 sudo echo "worker_processes 8;
   
 events {  
@@ -81,6 +89,11 @@ http {
         
         include /etc/nginx/sites-enabled/*;
 }" > "/etc/nginx/nginx.conf"
+sudo mkdir -p /var/log/nginx
+sudo touch /var/log/nginx/access.log
+sudo chmod 777 /var/log/nginx/access.log
+sudo touch /var/log/nginx/error.log
+sudo chmod 777 /var/log/nginx/error.log
 sudo echo "location ~ \.php\$ {
   proxy_intercept_errors on;
   try_files \$uri /index.php;
@@ -150,6 +163,25 @@ echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb
 brew services start mariadb
+sudo echo "#
+# This group is read both both by the client and the server
+# use it for options that affect everything
+#
+[client-server]
+
+#
+# include all files from the config directory
+#
+!includedir /usr/local/etc/my.cnf.d
+
+[mysqld]
+innodb_log_file_size = 32M
+innodb_buffer_pool_size = 1024M
+innodb_log_buffer_size = 4M
+slow_query_log = 1
+query_cache_limit = 512K
+query_cache_size = 128M
+skip-name-resolve" > "/usr/local/etc/my.cnf"
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Installing DNSmasq.${txtreset}"
 brew install dnsmasq
@@ -169,4 +201,6 @@ sudo brew services start php70
 brew services stop mariadb
 brew services start mariadb
 sudo brew services list
-echo "${boldgreen}You should now be able to use http://localhost. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
+
+
+echo "${boldgreen}You should now be able to use http://localhost. If not, test with commands sudo nginx -t and sudo php-fpm -t and fix errors. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
