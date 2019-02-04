@@ -40,7 +40,7 @@ server {
     listen 80;
     root /var/www/example;
     index index.html index.htm index.php;
-    server_name example.dev www.example.dev;
+    server_name example.test www.example.test;
     include php7.conf;
     include global/wordpress.conf;
 }
@@ -74,7 +74,7 @@ For mysql, remember to run `mysql_secure_installation`. Your logs can be found a
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
-You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.dev`. Also, consider adding these bash aliases for easy stopping and starting services:
+You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`. Also, consider adding these bash aliases for easy stopping and starting services:
 
 ```` bash
 alias nginx.start='sudo brew services start nginx'
