@@ -148,17 +148,18 @@ echo "${yellow}Installing PHP.${txtreset}"
 brew tap homebrew/dupes
 brew tap homebrew/versions
 brew tap homebrew/homebrew-php
-brew install php70
+brew install php@7.2
 mkdir -p ~/Library/LaunchAgents
-cp /usr/local/opt/php70/homebrew.mxcl.php70.plist ~/Library/LaunchAgents/
-launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php70.plist
+cp /usr/local/opt/php@7.2/homebrew.mxcl.php@7.2.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php@7.2.plist
 lsof -Pni4 | grep LISTEN | grep php
-sudo touch /var/log/fpm7.0-php.slow.log
-sudo chmod 775 /var/log/fpm7.0-php.slow.log
-sudo chown "$USER":staff /var/log/fpm7.0-php.slow.log
-sudo touch /var/log/fpm7.0-php.www.log
-sudo chmod 775 /var/log/fpm7.0-php.www.log
-sudo chown "$USER":staff /var/log/fpm7.0-php.www.log
+sudo touch /var/log/fpm7.2-php.slow.log
+sudo chmod 775 /var/log/fpm7.2-php.slow.log
+sudo chown "$USER":staff /var/log/fpm7.2-php.slow.log
+sudo touch /var/log/fpm7.2-php.www.log
+sudo chmod 775 /var/log/fpm7.2-php.www.log
+sudo chown "$USER":staff /var/log/fpm7.2-php.www.log
+sudo echo "export PATH=\"\$(brew --prefix php@7.2)/bin:\$PATH\"" >> ~/.bashrc
 echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb
@@ -196,11 +197,10 @@ sudo brew services stop dnsmasq
 sudo brew services start dnsmasq
 sudo brew services stop nginx
 sudo brew services start nginx
-sudo brew services stop php70
-sudo brew services start php70
+sudo brew services stop php@7.2
+sudo brew services start php@7.2
 brew services stop mariadb
 brew services start mariadb
 sudo brew services list
-
 
 echo "${boldgreen}You should now be able to use http://localhost. If not, test with commands sudo nginx -t and sudo php-fpm -t and fix errors. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
