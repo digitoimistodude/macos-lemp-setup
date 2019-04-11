@@ -89,3 +89,71 @@ alias mysql.restart='mysql.stop && mysql.start'
 alias localserver.stop='mysql.stop && nginx.stop && php-fpm.stop'
 alias localserver.start='mysql.start && nginx.start && php-fpm.start'
 ````
+
+### Certificates for localhost
+
+Based on [this tutorial](https://nickolaskraus.org/articles/how-to-create-a-self-signed-certificate-for-nginx-on-macos/), you can create a project based certificates for yourself for macos-lemp.
+
+If you haven't generated any local certs before, run this command first. You only need to do this once.
+
+```` bash
+mkdir -p ~/certs && cd ~/certs && openssl genrsa -des3 -out localhost.key 2048 && openssl req -x509 -new -nodes -key localhost.key -sha256 -days 1825 -out localhost.pem
+````
+
+Add some password, for example the same you have on your Mac. Add some unique name when **Common Name (e.g. server FQDN or YOUR name) []:**, to see which one is yours in the following step. You can ignore other questions.
+
+Open **Keychain Access** app and import your key from *File > Import Items...* by navigating to your file. Select your key, click *Get Info*, open *Trust* and select *When using this certificate:* to *Always Trust*.
+
+Then run project based commands (these you will need for every project in the future) (replace project.test with your specific project TLD):
+
+```` bash
+cd ~/certs && openssl genrsa -out project.test.key 2048 && openssl req -new -key project.test.key -out project.test.csr
+````
+
+Create a new filed `project.test.ext` (with your real project TLD, naturally) and add these to it:
+
+```` nginx
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = project.test
+````
+
+After this, generate the certificate with this command:
+
+```` bash
+cd ~/certs && openssl x509 -req -in project.test.csr -CA localhost.pem -CAkey localhost.key -CAcreateserial \
+-out project.test.crt -days 1825 -sha256 -extfile project.test.ext
+````
+
+Edit your vhost file as follows (again, replace project.test with your specific project TLD and yourusername with your actual Mac username):
+
+```` nginx
+server {
+    listen 443 ssl http2;
+    include php7.conf;
+    include global/wordpress.conf;
+    root /var/www/project;
+    index index.html index.htm index.php;
+    server_name project.test www.project.test;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_ecdh_curve secp384r1;
+    ssl_session_tickets off;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    ssl_certificate /Users/rolle/certs/project.test.crt;
+    ssl_certificate_key /Users/rolle/certs/project.test.key;
+    ssl_dhparam /private/etc/ssl/certs/dhparam.pem;
+}
+````
+
+Test with `sudo nginx -t` and if everything is OK, restart nginx.
