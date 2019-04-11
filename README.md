@@ -157,3 +157,20 @@ server {
 ````
 
 Test with `sudo nginx -t` and if everything is OK, restart nginx.
+
+Create browsersync.key and browsersync.crt with the same methodology and change that part of your browsersync like to be like this:
+
+```` js
+browsersync.init(files, {
+    proxy: "https://project.test",
+    browser: "Google Chrome",
+    open: false,
+    notify: true,
+    reloadDelay: 1000,
+    plugins: ['bs-eslint-message'],
+    https: {
+        key: "/Users/rolle/certs/browsersync.key",
+        cert: "/Users/rolle/certs/browsersync.crt"
+    }
+  });
+````
