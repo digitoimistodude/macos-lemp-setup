@@ -162,6 +162,12 @@ server {
 }
 ````
 
+Generate your dhparam.pem file with:
+
+````
+openssl dhparam -out /private/etc/ssl/certs/dhparam.pem 2048
+````
+
 Test with `sudo nginx -t` and if everything is OK, restart nginx.
 
 Create browsersync.key and browsersync.crt with the same methodology and change that part of your browsersync like to be like this:
