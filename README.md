@@ -148,7 +148,7 @@ Then run project based commands (these you will need for every project in the fu
 cd ~/certs && openssl genrsa -out project.test.key 2048 && openssl req -new -key project.test.key -out project.test.csr
 ````
 
-Create a new filed `project.test.ext` (with your real project TLD, naturally) and add these to it:
+Create a new filed `project.test.ext` (with your real project TLD, naturally) and add these to it (you can leave localhost out if you don't need to use browsersync):
 
 ```` nginx
 authorityKeyIdentifier=keyid,issuer
@@ -158,6 +158,7 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = project.test
+DNS.2 = localhost
 ````
 
 After this, generate the certificate with this command:
@@ -202,7 +203,7 @@ openssl dhparam -out /private/etc/ssl/certs/dhparam.pem 2048
 
 Test with `sudo nginx -t` and if everything is OK, restart nginx.
 
-Create browsersync.key and browsersync.crt with the same methodology and change that part of your browsersync like to be like this:
+Link cert files to browsersync configuration
 
 ```` js
 browsersync.init(files, {
@@ -213,8 +214,8 @@ browsersync.init(files, {
     reloadDelay: 1000,
     plugins: ['bs-eslint-message'],
     https: {
-        key: "/Users/rolle/certs/browsersync.key",
-        cert: "/Users/rolle/certs/browsersync.crt"
+        key: "/Users/rolle/certs/project.test.ext",
+        cert: "/Users/rolle/certs/project.test.crt"
     }
   });
 ````
