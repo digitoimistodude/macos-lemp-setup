@@ -122,6 +122,21 @@ alias localserver.stop='mysql.stop && nginx.stop && php-fpm.stop'
 alias localserver.start='mysql.start && nginx.start && php-fpm.start'
 ````
 
+Even better, add this to */usr/local/bin/service* and chmod it +x:
+
+```` bash
+#!/bin/bash
+# Alias for unix type of commands
+brew services "$2" "$1";
+````
+
+Now you are able to restart nginx and mysql unix style like this:
+
+```` bash
+sudo service nginx restart
+sudo service mariadb restart
+````
+
 ### File sizes
 
 You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/7.2/php-fpm.d/www.conf` and `/usr/local/etc/php/7.2/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
