@@ -1,4 +1,4 @@
-## Install local LEMP for Mac OS X
+## Install local LEMP for macOS
 
 For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. Please see [installation steps](#installation-steps).
 
