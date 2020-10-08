@@ -22,32 +22,12 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 1. Install wget, `brew install wget`
 2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
-3. Link executables like this:
-
-Run: `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file:
-
-`sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
-
-Check the version with `php --version`, it should match the linked file.
-
-Then link other executables like mysql that are needed:
-
-`sudo find / -name 'mysql'`
-`sudo ln -s /usr/local/Cellar/mariadb/10.4.6/bin/mysql /usr/local/bin/mysql`
-
-Then nginx:
-
-`sudo find / -name 'nginx'`
-`sudo ln -s /usr/local/Cellar/nginx/1.17.1/bin/nginx /usr/local/bin/nginx`
-
-Then php-fpm:
-
-`sudo find / -name 'php-fpm'`
-`sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/sbin/php-fpm /usr/local/bin/php-fpm`
-
-4. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
-
-5. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
+3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
+4. Check the version with `php --version`, it should match the linked file.
+5. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
+6. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
+7. Run [Post install](#post-install)
+8. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
 ### Post install
 
