@@ -33,7 +33,7 @@ Check the version with `php --version`, it should match the linked file.
 Then link other executables like mysql that are needed:
 
 `sudo find / -name 'mysql'`
-`sudo ln -s /usr/local/Cellar/mariadb/10.4.6/include/mysql /usr/local/bin/mysql`
+`sudo ln -s /usr/local/Cellar/mariadb/10.4.6/bin/mysql /usr/local/bin/mysql`
 
 Then nginx:
 
