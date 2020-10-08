@@ -65,7 +65,7 @@ php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
 
-Default vhost could be something like:
+Default vhost for your site (/etc/nginx/sites-enabled/sitename.test) could be something like:
 
 ```` nginx
 server {
@@ -106,23 +106,11 @@ For mysql, remember to run `sudo mysql_secure_installation`. Your logs can be fo
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
-You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`. Also, consider adding these bash aliases for easy stopping and starting services:
+You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`.
 
-```` bash
-alias nginx.start='sudo brew services start nginx'
-alias nginx.stop='sudo brew services stop nginx'
-alias nginx.restart='nginx.stop && nginx.start'
-alias php-fpm.start='sudo brew services start php@7.2'
-alias php-fpm.stop='sudo brew services stop php@7.2'
-alias php-fpm.restart='php-fpm.stop && php-fpm.start'
-alias mysql.start='brew services start mariadb'
-alias mysql.stop='brew services stop mariadb'
-alias mysql.restart='mysql.stop && mysql.start'
-alias localserver.stop='mysql.stop && nginx.stop && php-fpm.stop'
-alias localserver.start='mysql.start && nginx.start && php-fpm.start'
-````
+### Use Linux-style aliases
 
-Even better, add this to */usr/local/bin/service* and chmod it +x:
+Add this to */usr/local/bin/service* and chmod it +x:
 
 ```` bash
 #!/bin/bash
