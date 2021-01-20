@@ -82,7 +82,7 @@ query_cache_size = 128M
 skip-name-resolve
 ````
 
-For mysql, remember to run `sudo mysql_secure_installation`. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
+For mysql, <b>remember to run `sudo mysql_secure_installation`</b>, answer as suggested, add/change root password, remove test users etc. <b>Only exception!</b> Answer with <kbd>n</kbd> to the question <code>Disallow root login remotely? [Y/n]</code>. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
@@ -211,4 +211,19 @@ If you have something like this in your /var/log/nginx/error.log:
 2019/08/12 14:09:04 [crit] 639#0: *129 open() "/usr/local/var/run/nginx/client_body_temp/0000000005" failed (13: Permission denied), client: 127.0.0.1, server: project.test, request: "POST /wp/wp-admin/async-upload.php HTTP/1.1", host: "project.test", referrer: "http://project.test/wp/wp-admin/upload.php"
 ```
 
-**Make sure you run nginx on your root user**. Stop nginx from running on your default user by `brew services stop nginx` and run it with sudo `sudo brew services start nginx`.
+If you cannot login to mysql from other than localhost, please answer with <kbd>n</kbd> to the question <code>Disallow root login remotely? [Y/n]</code> when running <code>mysql_secure_install</code>.
+
+**Make sure you run nginx and php-fpm on your root user and mariadb on your regular user**. This is important. Stop nginx from running on your default user by `brew services stop nginx` and run it with sudo `sudo brew services start nginx`.
+
+<code>sudo brew services list</code> should look like this:
+
+``` shell
+~ sudo brew services list
+Name       Status  User  Plist
+dnsmasq    started root  /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+mariadb    started rolle /Users/rolle/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
+nginx      started root  /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+php@7.3    started root  /Library/LaunchDaemons/homebrew.mxcl.php@7.3.plist
+```
+
+You may have "unknown" as status or different PHP version, but **User** should be like in the list above. Then everything should work.  
