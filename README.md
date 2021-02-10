@@ -124,7 +124,7 @@ Then edit your vhost as following (change all from *project* to your project nam
 ```` nginx
 server {
     listen 443 ssl http2;
-    root /var/www/dude;
+    root /var/www/project;
     index index.php;    
     server_name project.test;
 
