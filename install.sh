@@ -153,6 +153,9 @@ mkdir -p ~/Library/LaunchAgents
 cp /usr/local/opt/php@7.2/homebrew.mxcl.php@7.2.plist ~/Library/LaunchAgents/
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php@7.2.plist
 lsof -Pni4 | grep LISTEN | grep php
+sudo ln -s /usr/local/etc/php/7.2/php-fpm.conf /private/etc/php-fpm.conf
+sudo sed -i '' 's/;error_log/error_log/' /private/etc/php-fpm.conf
+sudo sed -i '' 's/log\/php-fpm.log/\/var\/log\/php-fpm.log/' /private/etc/php-fpm.conf
 sudo touch /var/log/fpm7.2-php.slow.log
 sudo chmod 775 /var/log/fpm7.2-php.slow.log
 sudo chown "$USER":staff /var/log/fpm7.2-php.slow.log
@@ -160,6 +163,8 @@ sudo touch /var/log/fpm7.2-php.www.log
 sudo chmod 775 /var/log/fpm7.2-php.www.log
 sudo chown "$USER":staff /var/log/fpm7.2-php.www.log
 sudo echo "export PATH=\"\$(brew --prefix php@7.2)/bin:\$PATH\"" >> ~/.bashrc
+sudo brew services stop php@7.2
+sudo brew services start php@7.2
 echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb

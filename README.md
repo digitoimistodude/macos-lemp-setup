@@ -1,4 +1,4 @@
-## Install local LEMP for Mac OS X
+## Install local LEMP for macOS
 
 For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. Please see [installation steps](#installation-steps).
 
@@ -22,32 +22,12 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 1. Install wget, `brew install wget`
 2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
-3. Link executables like this:
-
-Run: `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file:
-
-`sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
-
-Check the version with `php --version`, it should match the linked file.
-
-Then link other executables like mysql that are needed:
-
-`sudo find / -name 'mysql'`
-`sudo ln -s /usr/local/Cellar/mariadb/10.4.6/include/mysql /usr/local/bin/mysql`
-
-Then nginx:
-
-`sudo find / -name 'nginx'`
-`sudo ln -s /usr/local/Cellar/nginx/1.17.1/bin/nginx /usr/local/bin/nginx`
-
-Then php-fpm:
-
-`sudo find / -name 'php-fpm'`
-`sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/sbin/php-fpm /usr/local/bin/php-fpm`
-
-4. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
-
-5. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
+3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
+4. Check the version with `php --version`, it should match the linked file.
+5. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
+6. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
+7. Run [Post install](#post-install)
+8. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
 ### Post install
 
@@ -65,7 +45,7 @@ php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
 
-Default vhost could be something like:
+Default vhost for your site (/etc/nginx/sites-enabled/sitename.test) could be something like:
 
 ```` nginx
 server {
@@ -102,27 +82,15 @@ query_cache_size = 128M
 skip-name-resolve
 ````
 
-For mysql, remember to run `sudo mysql_secure_installation`. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
+For mysql, <b>remember to run `sudo mysql_secure_installation`</b>, answer as suggested, add/change root password, remove test users etc. <b>Only exception!</b> Answer with <kbd>n</kbd> to the question <code>Disallow root login remotely? [Y/n]</code>. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
-You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`. Also, consider adding these bash aliases for easy stopping and starting services:
+You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`.
 
-```` bash
-alias nginx.start='sudo brew services start nginx'
-alias nginx.stop='sudo brew services stop nginx'
-alias nginx.restart='nginx.stop && nginx.start'
-alias php-fpm.start='sudo brew services start php@7.2'
-alias php-fpm.stop='sudo brew services stop php@7.2'
-alias php-fpm.restart='php-fpm.stop && php-fpm.start'
-alias mysql.start='brew services start mariadb'
-alias mysql.stop='brew services stop mariadb'
-alias mysql.restart='mysql.stop && mysql.start'
-alias localserver.stop='mysql.stop && nginx.stop && php-fpm.stop'
-alias localserver.start='mysql.start && nginx.start && php-fpm.start'
-````
+### Use Linux-style aliases
 
-Even better, add this to */usr/local/bin/service* and chmod it +x:
+Add this to */usr/local/bin/service* and chmod it +x:
 
 ```` bash
 #!/bin/bash
@@ -192,4 +160,19 @@ If you have something like this in your /var/log/nginx/error.log:
 2019/08/12 14:09:04 [crit] 639#0: *129 open() "/usr/local/var/run/nginx/client_body_temp/0000000005" failed (13: Permission denied), client: 127.0.0.1, server: project.test, request: "POST /wp/wp-admin/async-upload.php HTTP/1.1", host: "project.test", referrer: "http://project.test/wp/wp-admin/upload.php"
 ```
 
-Make sure you run nginx on your root user. Stop nginx from running on your default user by `brew services stop nginx` and run it with sudo `sudo brew services start nginx`.
+If you cannot login to mysql from other than localhost, please answer with <kbd>n</kbd> to the question <code>Disallow root login remotely? [Y/n]</code> when running <code>mysql_secure_install</code>.
+
+**Make sure you run nginx and php-fpm on your root user and mariadb on your regular user**. This is important. Stop nginx from running on your default user by `brew services stop nginx` and run it with sudo `sudo brew services start nginx`.
+
+<code>sudo brew services list</code> should look like this:
+
+``` shell
+~ sudo brew services list
+Name       Status  User  Plist
+dnsmasq    started root  /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+mariadb    started rolle /Users/rolle/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
+nginx      started root  /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+php@7.3    started root  /Library/LaunchDaemons/homebrew.mxcl.php@7.3.plist
+```
+
+You may have "unknown" as status or different PHP version, but **User** should be like in the list above. Then everything should work.  
