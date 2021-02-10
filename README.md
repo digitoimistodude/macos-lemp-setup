@@ -12,11 +12,23 @@ wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/ma
 
 Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): **[Moving from Vagrant to a LEMP stack directly on a Macbook Pro (for WordPress development)](https://medium.com/@rolle/moving-from-vagrant-to-a-lemp-stack-directly-on-a-macbook-pro-e935b1bc5a38)**
 
+### Features
+
+- PHP 7.2
+- nginx 1.19.2
+- Super lightweight
+- Native packages
+- Always on system service
+- HTTPS support
+- Consistent with production setup
+- Works even [on Windows](https://github.com/digitoimistodude/windows-lemp-setup)
+
 ### Dependencies
 
 - [Homebrew](https://brew.sh/)
 - macOS, preferably 10.14.2 (Mojave)
 - wget
+- [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Installation steps
 
