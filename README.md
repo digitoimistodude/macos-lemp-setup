@@ -119,7 +119,7 @@ Generating certificates for dev environment is easiest with [mkcert](https://git
 mkdir -p /var/www/certs && cd /var/www/certs && mkcert "project.test"
 ````
 
-Then edit your vhost as following:
+Then edit your vhost as following (change all from *project* to your project name):
 
 ```` nginx
 server {
@@ -131,8 +131,8 @@ server {
     include php7.conf;
     include global/wordpress.conf;
 
-    ssl_certificate /var/www/certs/dude.test.pem;
-    ssl_certificate_key /var/www/certs/dude.test-key.pem;
+    ssl_certificate /var/www/certs/project.test.pem;
+    ssl_certificate_key /var/www/certs/project.test-key.pem;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
