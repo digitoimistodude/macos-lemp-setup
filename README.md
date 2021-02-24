@@ -8,6 +8,18 @@ wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/ma
 
 **Please note:** Don't trust blindly to the script, use only if you know what you are doing. You can view the file [here](https://github.com/digitoimistodude/osx-lemp-setup/blob/master/install.sh) if having doubts what commands are being run. However, script is tested working many times and should be safe to run even if you have some or all of the components already installed.
 
+## Table of contents
+
+1. [Background](#background)
+2. [Features](#features)
+3. [Requirements](#requirements)
+4. [Installation](#installation)
+5. [Post installations](#post-installations)
+6. [Use Linux-style aliases](#use-linux-style-aliases)
+7. [File sizes](#file-sizes)
+8. [XDebug](#xdebug)
+9. [Troubleshooting](#troubleshooting)
+
 ### Background
 
 Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): **[Moving from Vagrant to a LEMP stack directly on a Macbook Pro (for WordPress development)](https://medium.com/@rolle/moving-from-vagrant-to-a-lemp-stack-directly-on-a-macbook-pro-e935b1bc5a38)**
@@ -23,14 +35,14 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 - Consistent with production setup
 - Works even [on Windows](https://github.com/digitoimistodude/windows-lemp-setup)
 
-### Dependencies
+### Requirements
 
 - [Homebrew](https://brew.sh/)
 - macOS, preferably 10.14.2 (Mojave)
 - wget
 - [mkcert](https://github.com/FiloSottile/mkcert)
 
-### Installation steps
+### Installation
 
 1. Install wget, `brew install wget`
 2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
@@ -41,7 +53,7 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 7. Run [Post install](#post-install)
 8. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
-### Post install
+### Post installations
 
 You may want to add your user and group correctly to `/usr/local/etc/php/7.2/php-fpm.d/www.conf` and set these to the bottom:
 
@@ -171,6 +183,89 @@ server {
 ````
 
 Test with `sudo nginx -t` and if everything is OK, restart nginx.
+
+### XDebug
+
+1. Check your PHP version with `php --version`
+2. Search pecl `find -L "$(brew --prefix php@7.3)" -name pecl -o -name pear`
+3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.3/bin/pecl /usr/local/bin/pecl`
+4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
+5. Install xdebug `pecl install xdebug`
+6. Check `php --version`, it should display something like this:
+
+``` shell
+$ php --version
+PHP 7.3.21 (cli) (built: Aug  7 2020 18:56:36) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.3.21, Copyright (c) 1998-2018 Zend Technologies
+    with Xdebug v3.0.3, Copyright (c) 2002-2021, by Derick Rethans
+    with Zend OPcache v7.3.21, Copyright (c) 1999-2018, by Zend Technologies
+```
+
+7. Check where your php.ini file is with `php --ini`
+8. Edit php.ini, for example `sudo nano `
+9. Make sure these are on the first lines:
+
+```
+zend_extension="xdebug.so"
+xdebug.mode=debug
+xdebug.client_port=9003
+xdebug.client_host=127.0.0.1
+xdebug.remote_handler=dbgp
+xdebug.start_with_request=yes
+xdebug.discover_client_host=0
+xdebug.show_error_trace = 1
+xdebug.max_nesting_level=250
+xdebug.var_display_max_depth=10
+xdebug.log=/var/log/xdebug.log
+```
+
+10. Save and close with <kbd>ctrl</kbd> + <kbd>O</kbd> and <kbd>ctrl</kbd> + <kbd>X</kbd>
+11. Make sure the log exists `sudo touch /var/log/xdebug.log && sudo chmod 777 /var/log/xdebug.log`
+12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service php@7.3 restart && sudo service nginx restart`
+13. Install [PHP Debug VSCode plugin](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
+14. Add following to launch.json (<kbd>cmd</kbd> + + <kbd>shift</kbd> + <kbd>P</kbd>, "Open launch.json"):
+
+``` json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      //"debugServer": 4711, // Uncomment for debugging the adapter
+      "name": "Listen for Xdebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "log": true
+    },
+    {
+      //"debugServer": 4711, // Uncomment for debugging the adapter
+      "name": "Launch",
+      "request": "launch",
+      "type": "php",
+      "program": "${file}",
+      "cwd": "${workspaceRoot}",
+      "externalConsole": false
+    }
+  ]
+}
+```
+15. Xdebug should now work on your editor
+16. PHPCS doesn't need xdebug but will warn about it not working... this causes error in [phpcs-vscode](https://marketplace.visualstudio.com/items?itemName=ikappas.phpcs) because it depends on outputted phpcs json that is not valid with the warning _"Xdebug: [Step Debug] Could not connect to debugging client. Tried: 127.0.0.1:9003 (through xdebug.client_host/xdebug.client_port) :-(_". This can be easily fixed by installing a bash "wrapper":
+17. Rename current phpcs with `sudo mv /usr/local/bin/phpcs /usr/local/bin/phpcs.bak`
+18. Install new with `sudo nano /usr/local/bin/phpcs`:
+
+``` bash
+#!/bin/bash
+XDEBUG_MODE=off /Users/rolle/Projects/phpcs/bin/phpcs "$@"
+```
+
+19. Add permissions `sudo chmod +x /usr/local/bin/phpcs`
+20. Make sure VSCode settings.json has this setting:
+
+``` json
+"phpcs.executablePath": "/usr/local/bin/phpcs",
+```
 
 ### Troubleshooting
 
