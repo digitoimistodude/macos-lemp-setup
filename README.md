@@ -18,7 +18,8 @@ wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/ma
 6. [Use Linux-style aliases](#use-linux-style-aliases)
 7. [File sizes](#file-sizes)
 8. [XDebug](#xdebug)
-9. [Troubleshooting](#troubleshooting)
+9. [Redis](#redis)
+10. [Troubleshooting](#troubleshooting)
 
 ### Background
 
@@ -266,6 +267,19 @@ XDEBUG_MODE=off /Users/rolle/Projects/phpcs/bin/phpcs "$@"
 ``` json
 "phpcs.executablePath": "/usr/local/bin/phpcs",
 ```
+
+### Redis
+
+Redis is an open source, in-memory data structure store, used as a database, cache.
+
+We are going to install Redis and php-redis.
+
+1. Check that `pecl` command works
+2. Install Redis, `brew install redis`
+3. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
+4. Test if Redis server is running `redis-cli ping`
+5. Install PHP Redis extention `pecl install redis-5.0.2`. When asked about enabling some supports, answer `no`.
+6. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command
 
 ### Troubleshooting
 
