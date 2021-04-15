@@ -275,11 +275,12 @@ Redis is an open source, in-memory data structure store, used as a database, cac
 We are going to install Redis and php-redis.
 
 1. Check that `pecl` command works
-2. Install Redis, `brew install redis`
-3. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
-4. Test if Redis server is running `redis-cli ping`
-5. Install PHP Redis extention `pecl install redis-5.0.2`. When asked about enabling some supports, answer `no`.
-6. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command
+2. Run `brew update` first
+3. Install Redis, `brew install redis`
+4. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
+5. Test if Redis server is running `redis-cli ping`, expected response is `OK`
+6. Install PHP Redis extention `pecl install redis-5.0.2`. When asked about enabling some supports, answer `no`.
+7. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command, expected response is `OK`
 
 ### Troubleshooting
 
