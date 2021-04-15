@@ -270,19 +270,28 @@ XDEBUG_MODE=off /Users/rolle/Projects/phpcs/bin/phpcs "$@"
 
 ### Redis
 
-Redis is an open source, in-memory data structure store, used as a database, cache.
+Redis is an open source, in-memory data structure store, used as a database, cache. We are going to install Redis and php-redis.
 
-We are going to install Redis and php-redis.
+Before installation, make sure you do not use PHP provided by macOS. You should be using PHP installed by homebrew. If you are having problems with testing php-redis after installation, it is most probably caused bacuse of using wrong PHP. See (Troubleshooting: Testing which version of PHP you run)(#testing-which-version-of-php-you-run) for more information.
 
 1. Check that `pecl` command works
 2. Run `brew update` first
 3. Install Redis, `brew install redis`
 4. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
 5. Test if Redis server is running `redis-cli ping`, expected response is `OK`
+6. Install PHP igbinary extension `pecl install igbinary-3.2.1
 6. Install PHP Redis extention `pecl install redis-5.3.4`. When asked about enabling some supports, answer `no`.
 7. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command, expected response is `OK`
 
 ### Troubleshooting
+
+**Testing which version of PHP you run**
+
+Test with `php --version` what version of PHP you are using, if the command returns something like `PHP is included in macOS for compatibility with legacy software` then you are using macOS version and things most probably won't work as expected.
+
+To fix this, run command `sudo ln -s /usr/local/Cellar/php@7.3/7.3.27_1/bin/php /usr/local/bin/php` which symlinks the homebrew version to be used instead of macOS version.
+
+**PHP or mysql not working at all**
 
 If you have something like this in your /var/log/nginx/error.log:
 
