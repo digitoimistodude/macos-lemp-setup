@@ -58,7 +58,7 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 You may want to add your user and group correctly to `/usr/local/etc/php/7.2/php-fpm.d/www.conf` and set these to the bottom:
 
-```` nginx
+````
 catch_workers_output = yes
 php_flag[display_errors] = On
 php_admin_value[error_log] = /var/log/fpm7.2-php.www.log 
