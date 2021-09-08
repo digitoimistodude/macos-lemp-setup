@@ -48,11 +48,16 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 1. Install wget, `brew install wget`
 2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
 3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
-4. Check the version with `php --version`, it should match the linked file.
-5. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
-6. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
-7. Run [Post install](#post-install)
-8. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
+4. Use PHP path from correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly)
+   ``` shell
+   export PATH="$(brew --prefix php@7.2)/bin:$PATH"
+   export PATH="$(brew --prefix php@7.3)/bin:$PATH"
+   ```
+5. Check the version with `php --version`, it should match the linked file.
+6. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
+7. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
+8. Run [Post install](#post-install)
+9. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
 ### Post installations
 
@@ -187,7 +192,11 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
 
 ### XDebug
 
-1. Check your PHP version with `php --version`
+1. Check your PHP version with `php --version` and location with `which php`. If the location points to `/usr/bin/php`, you are mistakenly using macOS built-in PHP. Change PHP path to correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly):
+   ``` shell
+   export PATH="$(brew --prefix php@7.2)/bin:$PATH"
+   export PATH="$(brew --prefix php@7.3)/bin:$PATH"
+   ```
 2. Search pecl `find -L "$(brew --prefix php@7.3)" -name pecl -o -name pear`
 3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.3/bin/pecl /usr/local/bin/pecl`
 4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
