@@ -27,7 +27,7 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 ### Features
 
-- PHP 7.2
+- PHP 7.4
 - nginx 1.19.2
 - Super lightweight
 - Native packages
@@ -47,27 +47,28 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 1. Install wget, `brew install wget`
 2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
-3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.2/7.2.24/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.2/7.2.24/bin/php /usr/local/bin/php`
+3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.4/7.4.23/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php`
 4. Use PHP path from correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly)
    ``` shell
    export PATH="$(brew --prefix php@7.2)/bin:$PATH"
    export PATH="$(brew --prefix php@7.3)/bin:$PATH"
+   export PATH="$(brew --prefix php@7.4)/bin:$PATH"
    ```
 5. Check the version with `php --version`, it should match the linked file.
 6. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
-7. Add `export PATH="$(brew --prefix php@7.2)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
+7. Add `export PATH="$(brew --prefix php@7.4)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
 8. Run [Post install](#post-install)
 9. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
 ### Post installations
 
-You may want to add your user and group correctly to `/usr/local/etc/php/7.2/php-fpm.d/www.conf` and set these to the bottom:
+You may want to add your user and group correctly to `/usr/local/etc/php/7.4/php-fpm.d/www.conf` and set these to the bottom:
 
 ````
 catch_workers_output = yes
 php_flag[display_errors] = On
-php_admin_value[error_log] = /var/log/fpm7.2-php.www.log 
-slowlog = /var/log/fpm7.2-php.slow.log 
+php_admin_value[error_log] = /var/log/fpm7.4-php.www.log 
+slowlog = /var/log/fpm7.4-php.slow.log 
 php_admin_flag[log_errors] = On
 php_admin_value[memory_limit] = 1024M
 request_slowlog_timeout = 10
@@ -137,9 +138,9 @@ sudo service mariadb restart
 
 ### File sizes
 
-You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/7.2/php-fpm.d/www.conf` and `/usr/local/etc/php/7.2/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
+You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/7.4/php-fpm.d/www.conf` and `/usr/local/etc/php/7.4/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
 
-Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart php@7.2` and nginx with `sudo brew services restart nginx`.
+Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart php@7.4` and nginx with `sudo brew services restart nginx`.
 
 ### Certificates for localhost
 
@@ -196,20 +197,21 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
    ``` shell
    export PATH="$(brew --prefix php@7.2)/bin:$PATH"
    export PATH="$(brew --prefix php@7.3)/bin:$PATH"
+   export PATH="$(brew --prefix php@7.4)/bin:$PATH"
    ```
-2. Search pecl `find -L "$(brew --prefix php@7.3)" -name pecl -o -name pear`
-3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.3/bin/pecl /usr/local/bin/pecl`
+2. Search pecl `find -L "$(brew --prefix php@7.4)" -name pecl -o -name pear`
+3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.4/bin/pecl /usr/local/bin/pecl`
 4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
 5. Install xdebug `pecl install xdebug`
 6. Check `php --version`, it should display something like this:
 
 ``` shell
 $ php --version
-PHP 7.3.21 (cli) (built: Aug  7 2020 18:56:36) ( NTS )
-Copyright (c) 1997-2018 The PHP Group
-Zend Engine v3.3.21, Copyright (c) 1998-2018 Zend Technologies
+PHP 7.4.23 (cli) (built: Aug 27 2021 09:20:14) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
     with Xdebug v3.0.3, Copyright (c) 2002-2021, by Derick Rethans
-    with Zend OPcache v7.3.21, Copyright (c) 1999-2018, by Zend Technologies
+    with Zend OPcache v7.4.23, Copyright (c), by Zend Technologies
 ```
 
 7. Check where your php.ini file is with `php --ini`
@@ -232,7 +234,7 @@ xdebug.log=/var/log/xdebug.log
 
 10. Save and close with <kbd>ctrl</kbd> + <kbd>O</kbd> and <kbd>ctrl</kbd> + <kbd>X</kbd>
 11. Make sure the log exists `sudo touch /var/log/xdebug.log && sudo chmod 777 /var/log/xdebug.log`
-12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service php@7.3 restart && sudo service nginx restart`
+12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service php@7.4 restart && sudo service nginx restart`
 13. Install [PHP Debug VSCode plugin](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
 14. Add following to launch.json (<kbd>cmd</kbd> + + <kbd>shift</kbd> + <kbd>P</kbd>, "Open launch.json"):
 
@@ -296,9 +298,9 @@ Before installation, make sure you do not use PHP provided by macOS. You should 
 
 **Testing which version of PHP you run**
 
-Test with `php --version` what version of PHP you are using, if the command returns something like `PHP is included in macOS for compatibility with legacy software` then you are using macOS version and things most probably won't work as expected.
+Test with `php --version` what version of PHP you are using, if the command returns something like `PHP is included in macOS for compatibility with legacy software` and especially when `which php` is showing /usr/bin/php then you are using macOS built-in version (which will be removed in the future anyway) and things most probably won't work as expected.
 
-To fix this, run command `sudo ln -s /usr/local/Cellar/php@7.3/7.3.27_1/bin/php /usr/local/bin/php` which symlinks the homebrew version to be used instead of macOS version.
+To fix this, run command `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php` which symlinks the homebrew version to be used instead of macOS version OR use bashrc export as defined [here in step 4](https://github.com/digitoimistodude/macos-lemp-setup#installation).
 
 #### PHP or mysql not working at all
 
@@ -320,10 +322,10 @@ Name       Status  User  Plist
 dnsmasq    started root  /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 mariadb    started rolle /Users/rolle/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
 nginx      started root  /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
-php@7.3    started root  /Library/LaunchDaemons/homebrew.mxcl.php@7.3.plist
+php@7.4    started root  /Library/LaunchDaemons/homebrew.mxcl.php@7.4.plist
 ```
 
-You may have "unknown" as status or different PHP version, but **User** should be like in the list above. Then everything should work.
+You may have "unknown" or "error" as status or different PHP version, that is not a problem if ther server runs. **User** should be like in the list above. Then everything should work.
 
 #### MySQL/MariaDb issues
 
