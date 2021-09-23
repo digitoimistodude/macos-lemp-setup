@@ -15,6 +15,7 @@ wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/ma
 3. [Requirements](#requirements)
 4. [Installation](#installation)
 5. [Post installations](#post-installations)
+   1. [Mailhog](#MailHog)
 6. [Use Linux-style aliases](#use-linux-style-aliases)
 7. [File sizes](#file-sizes)
 8. [XDebug](#xdebug)
@@ -57,7 +58,7 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 5. Check the version with `php --version`, it should match the linked file.
 6. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
 7. Add `export PATH="$(brew --prefix php@7.4)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
-8. Run [Post install](#post-install)
+8. Go through [post installations](#post-installations)
 9. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
 ### Post installations
@@ -135,6 +136,26 @@ Now you are able to restart nginx and mysql unix style like this:
 sudo service nginx restart
 sudo service mariadb restart
 ````
+
+#### MailHog
+
+E-mails won't be sent on local environment because there is no email server configured. This is where [MailHog](https://github.com/mailhog/MailHog) comes in.
+
+MailHog should be pre-installed but if not, run following:
+
+``` bash
+brew update && brew install mailhog
+```
+
+Ensure you have the latest [air-helper](https://github.com/digitoimistodude/air-helper) or [MailHog for WordPress](https://wordpress.org/plugins/wp-mailhog-smtp/) activated to enable MailHog routing for local environment.
+
+Then just run:
+
+``` bash
+mailhog
+```
+
+You should now get a log in command line and web interface is available in http://0.0.0.0:8025/.
 
 ### File sizes
 

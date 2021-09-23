@@ -190,6 +190,9 @@ query_cache_limit = 512K
 query_cache_size = 128M
 skip-name-resolve" > "/usr/local/etc/my.cnf"
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
+echo "${yellow}Installing MailHog.${txtreset}"
+brew update && brew install mailhog
+echo "${boldgreen}MailHog installed (run mailhog to start mail server).${txtreset}"
 echo "${yellow}Installing DNSmasq.${txtreset}"
 brew install dnsmasq
 curl -L https://gist.githubusercontent.com/dtomasi/ab76d14338db82ec24a1fc137caff75b/raw/550c84393c4c1eef8a3e68bb720df561b5d3f175/dnsmasq.conf -o /usr/local/etc/dnsmasq.conf
