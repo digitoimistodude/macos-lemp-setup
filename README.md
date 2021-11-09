@@ -6,6 +6,8 @@ For *Front End development*, a full Vagrant box is not always needed. If you hav
 wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash
 ````
 
+Oneliner may not go through in macOS Big Sur and macOS Monterey, in that caes you need to copy and paste commands manually from [install.sh](https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh).
+
 **Please note:** Don't trust blindly to the script, use only if you know what you are doing. You can view the file [here](https://github.com/digitoimistodude/osx-lemp-setup/blob/master/install.sh) if having doubts what commands are being run. However, script is tested working many times and should be safe to run even if you have some or all of the components already installed.
 
 ## Table of contents
