@@ -173,7 +173,7 @@ First things first, if you haven't done it yet, generate general dhparam:
 ```` bash
 sudo su -
 cd /etc/ssl/certs
-openssl dhparam -out dhparam.pem 4096 
+sudo openssl dhparam -dsaparam -out dhparam.pem 4096
 ````
 
 Generating certificates for dev environment is easiest with [mkcert](https://github.com/FiloSottile/mkcert). After installing mkcert, just run:
