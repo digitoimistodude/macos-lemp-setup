@@ -1,9 +1,11 @@
 ## Install local LEMP for macOS
 
-For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. Please see [installation steps](#installation).
+For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. 
+
+Don't just run the oneliner in blind, please see [installation steps](#installation) first.
 
 ```` bash
-wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh)"
 ````
 
 Oneliner may not go through in macOS Big Sur and macOS Monterey, in that caes you need to copy and paste commands manually from [install.sh](https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh).
@@ -49,7 +51,7 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 ### Installation
 
 1. Install wget, `brew install wget`
-2. Run oneliner installation script `wget -O - https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh | bash`
+2. Run oneliner installation script `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh)"`
 3. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.4/7.4.23/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php`
 4. Use PHP path from correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly)
    ``` shell
