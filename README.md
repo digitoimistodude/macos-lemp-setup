@@ -80,7 +80,7 @@ php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
 
-Default vhost for your site (/etc/nginx/sites-enabled/sitename.test) could be something like:
+Default vhost for your site (/usr/local/etc/nginx/sites-enabled/sitename.test) could be something like:
 
 ```` nginx
 server {
