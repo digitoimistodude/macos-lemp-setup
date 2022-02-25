@@ -1,8 +1,12 @@
+# macOS LEMP: A proper way to locally develop WordPress
+
+Interested in similar approach on Windows? Read: [Setting up a local server on Windows 10 for WordPress theme development (or any web development for that matter)](https://rolle.design/local-server-on-windows-10-for-wordpress-theme-development).
+
 ## Install local LEMP for macOS
 
-For *Front End development*, a full Vagrant box is not always needed. If you have a new Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. 
+For *Front End development*, a full Vagrant box, docker container per site or Local by Flywheel is not really needed. If you have a Macbook Pro, you can install local LEMP (Linux, nginx, MariaDB and PHP) with this single liner below. 
 
-Don't just run the oneliner in blind, please see [installation steps](#installation) first.
+Don't just run the oneliner in blind, please see [installation steps](#installation) instructions first.
 
 ```` bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh)"
