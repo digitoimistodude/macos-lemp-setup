@@ -1,6 +1,13 @@
-# macOS LEMP: A proper way to locally develop WordPress
+# LEMP: Local Environment Made Powerful
+## A proper way to locally develop WordPress.
 
-Interested in similar approach on Windows? Read: [Setting up a local server on Windows 10 for WordPress theme development (or any web development for that matter)](https://rolle.design/local-server-on-windows-10-for-wordpress-theme-development).
+(Just kidding, it's really **Linux + nginx [engine x] + MySQL + PHP-FPM**)
+
+![macos-lemp](https://user-images.githubusercontent.com/1534150/159696251-1b8adbee-f752-4107-9183-78107ffb4969.png)
+
+**macOS LEMP Setup is Mac only!**
+
+Interested in similar approach on Windows? 👉 [Setting up a local server on Windows 10 for WordPress theme development (or any web development for that matter)](https://rolle.design/local-server-on-windows-10-for-wordpress-theme-development).
 
 ## Install local LEMP for macOS
 
