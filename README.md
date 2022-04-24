@@ -1,7 +1,7 @@
-# LEMP: Local Environment Made Powerful
-## A proper way to locally develop WordPress.
-
+# LEMP: Local Environment Made Powerful 
 (Just kidding, it's really **Linux + nginx [engine x] + MySQL + PHP-FPM**)
+
+## Still the best way to locally develop WordPress.
 
 ![macos-lemp](https://user-images.githubusercontent.com/1534150/159696251-1b8adbee-f752-4107-9183-78107ffb4969.png)
 
