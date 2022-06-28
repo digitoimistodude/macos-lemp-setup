@@ -502,3 +502,21 @@ If you are still having problems connecting with WordPress and prompting `Access
 GRANT ALL PRIVILEGES ON *.* TO root@localhost IDENTIFIED BY 'YOUR_MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO root@127.0.0.1 IDENTIFIED BY 'YOUR_MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;
 ```
+
+#### *2 open() "/var/www/test.txt" failed (13: Permission denied), client: 127.0.0.1
+
+If you are getting permission denied by nginx, you need to make sure your php-fpm and nginx are running on the same user. This is stricter on MacBook Pro M1.
+
+Open `/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf` and change the user, group and listen to following:
+
+```ini
+user = your_username
+group = staff
+listen = 127.0.0.1:9074
+```
+
+Open `/opt/homebrew/etc/nginx/nginx.conf` and add to first line:
+
+```ini
+user your_username staff;
+```
