@@ -102,7 +102,7 @@ Please note, if the file is not found (as the location may also be something lik
 sudo find / -name 'www.conf'
 ```
 
-Default vhost for your site (/etc/nginx/sites-enabled/sitename.test) could be something like:
+Default vhost for your site (`/etc/nginx/sites-enabled/sitename.test`) could be something like:
 
 ```` nginx
 server {
@@ -139,11 +139,31 @@ query_cache_size = 128M
 skip-name-resolve
 ````
 
+Again, if the correct file cannot be found, you can find it with:
+
+```
+sudo find / -name 'my.cnf'
+```
+
 For mysql, <b>remember to run `sudo mysql_secure_installation`</b>, answer as suggested, add/change root password, remove test users etc. <b>Only exception!</b> Answer with <kbd>n</kbd> to the question <code>Disallow root login remotely? [Y/n]</code>. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports macOS LEMP stack.
 
 You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`.
+
+### Symlinks
+
+You should find the correct files and link them like in Linux. This helps you to remember the correct paths.
+
+```bash
+sudo mkdir -p /usr/local/bin
+sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/bin/php /usr/local/bin/php
+sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/sbin/php-fpm /usr/local/bin/php-fpm
+sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/sbin/php-fpm /usr/local/bin/php-fpm
+sudo ln -s /System/Volumes/Data/opt/homebrew/etc/php /etc/php
+sudo ln -s /opt/homebrew/etc/nginx /etc/nginx
+sudo ln -s /System/Volumes/Data/opt/homebrew/etc/my.cnf /etc/my.cnf
+```
 
 ### Use Linux-style aliases
 
