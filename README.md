@@ -12,6 +12,7 @@ Interested in similar approach on Windows? 👉 [Setting up a local server on Wi
 ## Minimum requirements
 
 * Latest [Homebrew](https://brew.sh/)
+* MacBook Pro M1 (if you like to install this on Intel mac, refer to [this tutorial](https://kevdees.com/macos-12-monterey-nginx-setup-multiple-php-versions/))
 * macOS Monterey 12.3 or later
 
 ## Install local LEMP for macOS
