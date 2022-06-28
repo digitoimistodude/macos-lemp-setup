@@ -96,6 +96,12 @@ php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
 
+Please note, if the file is not found (as the location may also be something like `/System/Volumes/Data/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf`), you can find the correct location with:
+
+```
+sudo find / -name 'www.conf'
+```
+
 Default vhost for your site (/etc/nginx/sites-enabled/sitename.test) could be something like:
 
 ```` nginx
