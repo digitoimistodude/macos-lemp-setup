@@ -1,6 +1,3 @@
-#!/bin/bash
-# Install script for LEMP on OS X - by ronilaukkarinen.
-
 # Helpers:
 currentfile=`basename $0`
 txtbold=$(tput bold)
@@ -30,16 +27,16 @@ echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
 sudo chmod -R 775 /usr/local/etc/nginx
 sudo ln -sfnv /usr/local/etc/nginx /etc/nginx
-sudo mkdir -p /etc/nginx/global
+sudo mkdir -p /opt/homebrew/etc/nginx/global
 sudo mkdir -p /usr/local/etc/nginx
-sudo mkdir -p /etc/nginx/sites-enabled
-sudo mkdir -p /etc/nginx/sites-available
-sudo mkdir -p /etc/nginx/global
-sudo chmod -R 775 /etc/nginx/global
+sudo mkdir -p /opt/homebrew/etc/nginx/sites-enabled
+sudo mkdir -p /opt/homebrew/etc/nginx/sites-available
+sudo mkdir -p /opt/homebrew/etc/nginx/global
+sudo chmod -R 775 /opt/homebrew/etc/nginx/global
 sudo chmod -R 775 /usr/local/etc/nginx
-sudo chmod -R 775 /etc/nginx/sites-enabled
-sudo chmod -R 775 /etc/nginx/sites-available
-sudo chmod -R 775 /etc/nginx/global
+sudo chmod -R 775 /opt/homebrew/etc/nginx/sites-enabled
+sudo chmod -R 775 /opt/homebrew/etc/nginx/sites-available
+sudo chmod -R 775 /opt/homebrew/etc/nginx/global
 sudo echo "worker_processes 8;
   
 events {  
@@ -73,7 +70,7 @@ http {
         #server_names_hash_bucket_size 64;  
         # server_name_in_redirect off;  
   
-        include /etc/nginx/mime.types;  
+        include /opt/homebrew/etc/nginx/mime.types;  
         default_type application/octet-stream;  
 
         ##
@@ -87,8 +84,9 @@ http {
         # Virtual Host Configs
         ##
         
-        include /etc/nginx/sites-enabled/*;
-}" > "/etc/nginx/nginx.conf"
+        include /opt/homebrew/etc/nginx/sites-enabled/*;
+}" > "/opt/homebrew/etc/nginx/nginx.conf"
+sudo ln -s /opt/homebrew/etc/nginx /etc/nginx
 sudo mkdir -p /var/log/nginx
 sudo touch /var/log/nginx/access.log
 sudo chmod 777 /var/log/nginx/access.log
@@ -107,7 +105,7 @@ sudo echo "location ~ \.php\$ {
   fastcgi_index index.php;
   fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
   fastcgi_pass 127.0.0.1:9000;
-}" > "/etc/nginx/php7.conf"
+}" > "/opt/homebrew/etc/nginx/php7.conf"
 sudo echo "# WordPress single site rules.
 # Designed to be included in any server {} block.
 # Upstream to abstract backend connection(s) for php
@@ -134,7 +132,7 @@ rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
 # Directives to send expires headers and turn off 404 error logging.
 location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
        access_log off; log_not_found off; expires max;
-}" > "/etc/nginx/global/wordpress.conf"
+}" > "/opt/homebrew/etc/nginx/global/wordpress.conf"
 sudo echo "server {
         listen 80 default_server;
         root html;
@@ -142,8 +140,8 @@ sudo echo "server {
         server_name localhost;
         include php7.conf;
         #include global/wordpress.conf;
-}" > "/etc/nginx/sites-available/default"
-sudo ln -sfnv /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+}" > "/opt/homebrew/etc/nginx/sites-available/default"
+sudo ln -sfnv /opt/homebrew/etc/nginx/sites-available/default /opt/homebrew/etc/nginx/sites-enabled/default
 echo "${yellow}Installing PHP.${txtreset}"
 brew tap homebrew/dupes
 brew tap homebrew/versions
@@ -212,4 +210,4 @@ brew services stop mariadb
 brew services start mariadb
 sudo brew services list
 
-echo "${boldgreen}You should now be able to use http://localhost. If not, test with commands sudo nginx -t and sudo php-fpm -t and fix errors. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
+echo "${boldgreen}You should now be able to use http://localhost. If not, test with commands sudo nginx -t and sudo php-fpm -t and fix errors. Add new vhosts to /opt/homebrew/etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
