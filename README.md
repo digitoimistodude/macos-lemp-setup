@@ -287,7 +287,7 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
 
 ```
 zend_extension="xdebug.so"
-xdebug.mode=debug
+xdebug.mode=develop
 xdebug.client_port=9003
 xdebug.client_host=127.0.0.1
 xdebug.remote_handler=dbgp
