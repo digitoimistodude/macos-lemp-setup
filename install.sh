@@ -1,16 +1,14 @@
-# Helpers:
-currentfile=`basename $0`
+# Crucial paths
+HOMEBREW_PATH='/opt/homebrew'
+
+# Helper variables
 txtbold=$(tput bold)
 boldyellow=${txtbold}$(tput setaf 3)
 boldgreen=${txtbold}$(tput setaf 2)
-boldwhite=${txtbold}$(tput setaf 7)
 yellow=$(tput setaf 3)
-red=$(tput setaf 1)
 green=$(tput setaf 2)
 white=$(tput setaf 7)
 txtreset=$(tput sgr0)
-LOCAL_IP=$(ifconfig | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | grep -Eo "([0-9]*\.){3}[0-9]*" | grep -v "127.0.0.1")
-YEAR=$(date +%y)
 
 echo "${yellow}Getting dependencies.${txtreset}"
 xcode-select --install
@@ -22,22 +20,20 @@ echo "${yellow}Installing nginx.${txtreset}"
 brew tap homebrew/nginx
 brew install nginx
 sudo brew services start nginx
-curl -IL http://127.0.0.1:8080
+curl -IL http://127.0.0.1:80
 echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
-sudo chmod -R 775 /usr/local/etc/nginx
-sudo ln -sfnv /usr/local/etc/nginx /etc/nginx
-sudo mkdir -p /opt/homebrew/etc/nginx/global
-sudo mkdir -p /usr/local/etc/nginx
-sudo mkdir -p /opt/homebrew/etc/nginx/sites-enabled
-sudo mkdir -p /opt/homebrew/etc/nginx/sites-available
-sudo mkdir -p /opt/homebrew/etc/nginx/global
-sudo chmod -R 775 /opt/homebrew/etc/nginx/global
-sudo chmod -R 775 /usr/local/etc/nginx
-sudo chmod -R 775 /opt/homebrew/etc/nginx/sites-enabled
-sudo chmod -R 775 /opt/homebrew/etc/nginx/sites-available
-sudo chmod -R 775 /opt/homebrew/etc/nginx/global
-sudo echo "worker_processes 8;
+sudo ln -sfnv "${HOMEBREW_PATH}/etc/nginx" "/etc/nginx"
+sudo mkdir -p "${HOMEBREW_PATH}/etc/nginx/global"
+sudo mkdir -p "${HOMEBREW_PATH}/etc/nginx/sites-enabled"
+sudo mkdir -p "${HOMEBREW_PATH}/etc/nginx/sites-available"
+sudo mkdir -p "${HOMEBREW_PATH}/etc/nginx/global"
+sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/global"
+sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/sites-enabled"
+sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/sites-available"
+sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/global"
+sudo echo "user $(whoami) staff;
+worker_processes 18;
   
 events {  
         multi_accept on;
@@ -70,7 +66,7 @@ http {
         #server_names_hash_bucket_size 64;  
         # server_name_in_redirect off;  
   
-        include /opt/homebrew/etc/nginx/mime.types;  
+        include ${HOMEBREW_PATH}/etc/nginx/mime.types;  
         default_type application/octet-stream;  
 
         ##
@@ -84,9 +80,9 @@ http {
         # Virtual Host Configs
         ##
         
-        include /opt/homebrew/etc/nginx/sites-enabled/*;
-}" > "/opt/homebrew/etc/nginx/nginx.conf"
-sudo ln -s /opt/homebrew/etc/nginx /etc/nginx
+        include ${HOMEBREW_PATH}/etc/nginx/sites-enabled/*;
+}" > "${HOMEBREW_PATH}/etc/nginx/nginx.conf"
+sudo ln -s ${HOMEBREW_PATH}/etc/nginx /etc/nginx
 sudo mkdir -p /var/log/nginx
 sudo touch /var/log/nginx/access.log
 sudo chmod 777 /var/log/nginx/access.log
@@ -105,7 +101,7 @@ sudo echo "location ~ \.php\$ {
   fastcgi_index index.php;
   fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
   fastcgi_pass 127.0.0.1:9000;
-}" > "/opt/homebrew/etc/nginx/php7.conf"
+}" > "${HOMEBREW_PATH}/etc/nginx/php7.conf"
 sudo echo "# WordPress single site rules.
 # Designed to be included in any server {} block.
 # Upstream to abstract backend connection(s) for php
@@ -132,16 +128,18 @@ rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
 # Directives to send expires headers and turn off 404 error logging.
 location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
        access_log off; log_not_found off; expires max;
-}" > "/opt/homebrew/etc/nginx/global/wordpress.conf"
+}" > "${HOMEBREW_PATH}/etc/nginx/global/wordpress.conf"
 sudo echo "server {
         listen 80 default_server;
-        root html;
+        root /var/www;
         index index.html index.htm index.php;
         server_name localhost;
         include php7.conf;
-        #include global/wordpress.conf;
-}" > "/opt/homebrew/etc/nginx/sites-available/default"
-sudo ln -sfnv /opt/homebrew/etc/nginx/sites-available/default /opt/homebrew/etc/nginx/sites-enabled/default
+        include global/wordpress.conf;
+}" > "${HOMEBREW_PATH}/etc/nginx/sites-available/default"
+sudo ln -sfnv ${HOMEBREW_PATH}/etc/nginx/sites-available/default ${HOMEBREW_PATH}/etc/nginx/sites-enabled/default
+sudo cp "${HOMEBREW_PATH}/Cellar/nginx/1.23.1/html/index.html /var/www/"
+sudo chown -R $(whoami):staff /var/www
 echo "${yellow}Installing PHP.${txtreset}"
 brew tap homebrew/dupes
 brew tap homebrew/versions
@@ -151,42 +149,14 @@ mkdir -p ~/Library/LaunchAgents
 cp /usr/local/opt/php@7.4/homebrew.mxcl.php@7.4.plist ~/Library/LaunchAgents/
 sudo launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php\@7.4.plist 
 lsof -Pni4 | grep LISTEN | grep php
-sudo mv /private/etc/php-fpm.conf /private/etc/php-fpm.conf.old
-sudo ln -s /usr/local/etc/php/7.4/php-fpm.conf /private/etc/php-fpm.conf
-sudo sed -i '' 's/;error_log/error_log/' /private/etc/php-fpm.conf
-sudo sed -i '' 's/log\/php-fpm.log/\/var\/log\/php-fpm.log/' /private/etc/php-fpm.conf
-sudo touch /var/log/fpm7.4-php.slow.log
-sudo chmod 775 /var/log/fpm7.4-php.slow.log
-sudo chown "$USER":staff /var/log/fpm7.4-php.slow.log
-sudo touch /var/log/fpm7.4-php.www.log
-sudo chmod 775 /var/log/fpm7.4-php.www.log
-sudo chown "$USER":staff /var/log/fpm7.4-php.www.log
-sudo echo "export PATH=\"\$(brew --prefix php@7.4)/bin:\$PATH\"" >> ~/.bashrc
+sudo ln -s /System/Volumes/Data/opt/homebrew/etc/php /etc/PHP
+sudo echo "export PATH=\"\$(brew --prefix php@7.4)/bin:\$PATH\"" >> ~/.bash_profile
 sudo brew services stop php@7.4
 sudo brew services start php@7.4
 echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
 brew install mariadb
 brew services start mariadb
-sudo echo "#
-# This group is read both both by the client and the server
-# use it for options that affect everything
-#
-[client-server]
-
-#
-# include all files from the config directory
-#
-!includedir /usr/local/etc/my.cnf.d
-
-[mysqld]
-innodb_log_file_size = 32M
-innodb_buffer_pool_size = 1024M
-innodb_log_buffer_size = 4M
-slow_query_log = 1
-query_cache_limit = 512K
-query_cache_size = 128M
-skip-name-resolve" > "/usr/local/etc/my.cnf"
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Installing MailHog.${txtreset}"
 brew update && brew install mailhog
