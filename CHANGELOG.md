@@ -1,6 +1,9 @@
 ### 1.0.6: 2022-11-28
 
 * Remove derepcated homebrew/dupes and homebrew/versions taps (part of homebrew/core)
+* Remove deprecated LaunchAgents
+* Change deprecated homebrew/homebrew-php to shivammathur/php
+* Fix install commands for php@7.4
 
 ### 1.0.5: 2022-08-16
 
