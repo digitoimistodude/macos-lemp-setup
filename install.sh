@@ -141,7 +141,6 @@ sudo ln -sfnv ${HOMEBREW_PATH}/etc/nginx/sites-available/default ${HOMEBREW_PATH
 sudo cp "${HOMEBREW_PATH}/Cellar/nginx/1.23.1/html/index.html /var/www/"
 sudo chown -R $(whoami):staff /var/www
 echo "${yellow}Installing PHP.${txtreset}"
-brew tap homebrew/dupes
 brew tap homebrew/versions
 brew tap homebrew/homebrew-php
 brew install php@7.4

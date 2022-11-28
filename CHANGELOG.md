@@ -1,3 +1,7 @@
+### 1.0.6: 2022-11-28
+
+* Remove derepcated homebrew/dupes tap
+
 ### 1.0.5: 2022-08-16
 
 * Change xdebug.mode from debug to develop so var_dump will be shown correctly
