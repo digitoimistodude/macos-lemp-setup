@@ -1,6 +1,6 @@
 ### 1.0.6: 2022-11-28
 
-* Remove derepcated homebrew/dupes tap
+* Remove derepcated homebrew/dupes and homebrew/versions taps (part of homebrew/core)
 
 ### 1.0.5: 2022-08-16
 
