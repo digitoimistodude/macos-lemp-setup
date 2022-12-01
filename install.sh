@@ -142,7 +142,7 @@ sudo cp "${HOMEBREW_PATH}/Cellar/nginx/1.23.1/html/index.html /var/www/"
 sudo chown -R $(whoami):staff /var/www
 echo "${yellow}Installing PHP.${txtreset}"
 brew tap shivammathur/php
-brew install shivammathur/php/php@@7.4
+brew install shivammathur/php/php@7.4
 lsof -Pni4 | grep LISTEN | grep php
 sudo ln -s /System/Volumes/Data/opt/homebrew/etc/php /etc/PHP
 sudo echo "export PATH=\"\$(brew --prefix php@7.4)/bin:\$PATH\"" >> ~/.bash_profile
