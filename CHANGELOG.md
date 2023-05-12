@@ -1,3 +1,7 @@
+### 1.0.7: 2023-05-12
+
+* Fix duplicate symlink for nginx folder
+
 ### 1.0.6: 2022-11-28
 
 * Remove derepcated homebrew/dupes and homebrew/versions taps (part of homebrew/core)

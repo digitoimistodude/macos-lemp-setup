@@ -82,7 +82,6 @@ http {
         
         include ${HOMEBREW_PATH}/etc/nginx/sites-enabled/*;
 }" > "${HOMEBREW_PATH}/etc/nginx/nginx.conf"
-sudo ln -s ${HOMEBREW_PATH}/etc/nginx /etc/nginx
 sudo mkdir -p /var/log/nginx
 sudo touch /var/log/nginx/access.log
 sudo chmod 777 /var/log/nginx/access.log
