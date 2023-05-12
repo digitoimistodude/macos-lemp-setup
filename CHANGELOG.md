@@ -1,6 +1,7 @@
 ### 1.0.7: 2023-05-12
 
 * Fix duplicate symlink for nginx folder
+* Add php-fpm user, group and listen to PHP post installation instructions
 
 ### 1.0.6: 2022-11-28
 

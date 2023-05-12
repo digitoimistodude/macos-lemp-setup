@@ -83,7 +83,9 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 ### Post installations
 
-You may want to add your user and group correctly to `/usr/local/etc/php/7.4/php-fpm.d/www.conf` and set these to the bottom:
+#### PHP config
+
+You may want to add your user and group correctly to `/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf` (or wherever your www.conf is, find with `sudo find / -name 'www.conf'`) and set these to the bottom:
 
 ````
 catch_workers_output = yes
@@ -103,7 +105,37 @@ Please note, if the file is not found (as the location may also be something lik
 sudo find / -name 'www.conf'
 ```
 
-Default vhost for your site (`/etc/nginx/sites-enabled/sitename.test`) could be something like:
+#### Make sure the PHP runs on correct permissions
+
+Make sure you have your user and group defined, use these as base (only change `rolle` to your own Mac username):
+
+````config
+; Unix user/group of processes
+; Note: The user is mandatory. If the group is not set, the default user's group
+;       will be used.
+user = rolle
+group = admin
+````
+
+Also make sure you have listen set up properly
+
+````config
+; The address on which to accept FastCGI requests.
+; Valid syntaxes are:
+;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on
+;                            a specific port;
+;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
+;                            a specific port;
+;   'port'                 - to listen on a TCP socket to all addresses
+;                            (IPv6 and IPv4-mapped) on a specific port;
+;   '/path/to/unix/socket' - to listen on a unix socket.
+; Note: This value is mandatory.
+listen = 127.0.0.1:9000
+````
+
+#### Default nginx config
+
+Make sure you have default vhost for your site (`/etc/nginx/sites-enabled/sitename.test`) could be something like:
 
 ```` nginx
 server {
@@ -115,6 +147,8 @@ server {
     include global/wordpress.conf;
 }
 ````
+
+#### Default MySQL my.cnf
 
 Default my.cnf would be something like this (already added by install.sh in `/usr/local/etc/my.cnf`:
 
@@ -273,7 +307,7 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
 6. Check `php --version`, it should display something like this:
 
 ``` shell
-$ php --version
+$ php --version
 PHP 7.4.23 (cli) (built: Aug 27 2021 09:20:14) ( NTS )
 Copyright (c) The PHP Group
 Zend Engine v3.4.0, Copyright (c) Zend Technologies
@@ -520,3 +554,7 @@ Open `/opt/homebrew/etc/nginx/nginx.conf` and add to first line:
 ```ini
 user your_username staff;
 ```
+
+#### "Primary script unknown" error in nginx log or "File not found." in browser
+
+This is caused by php-fpm not running properly. Please [make sure the PHP runs on correct permissions](#make-sure-the-php-runs-on-correct-permissions) section.
