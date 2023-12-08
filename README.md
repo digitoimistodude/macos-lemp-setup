@@ -7,7 +7,10 @@
 
 **macOS LEMP Setup is Mac only!**
 
-Interested in similar approach on Windows? 👉 [Setting up a local server on Windows 10 for WordPress theme development (or any web development for that matter)](https://rolle.design/local-server-on-windows-10-for-wordpress-theme-development).
+### Other platforms
+
+- Windows: [Setting up a local server on Windows 10 for WordPress theme development (or any web development for that matter)](https://rolle.design/local-server-on-windows-10-for-wordpress-theme-development).
+- Linux: [Pop!_OS LEMP setup instructions](https://github.com/raikasdev/pop-lemp-setup) by [raikasdev](https://github.com/raikasdev).
 
 ## Minimum requirements
 
