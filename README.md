@@ -387,7 +387,7 @@ XDEBUG_MODE=off /Users/rolle/Projects/phpcs/bin/phpcs "$@"
 
 Redis is an open source, in-memory data structure store, used as a database, cache. We are going to install Redis and php-redis.
 
-Before installation, make sure you do not use PHP provided by macOS. You should be using PHP installed by homebrew. If you are having problems with testing php-redis after installation, it is most probably caused bacuse of using wrong PHP. See (Troubleshooting: Testing which version of PHP you run)(#testing-which-version-of-php-you-run) for more information.
+Before installation, make sure you do not use PHP provided by macOS. You should be using PHP installed by homebrew. If you are having problems with testing php-redis after installation, it is most probably caused bacuse of using wrong PHP. See [Troubleshooting: Testing which version of PHP you run](#testing-which-version-of-php-you-run) for more information.
 
 1. Check that `pecl` command works
 2. Run `brew update` first
