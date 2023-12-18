@@ -394,13 +394,34 @@ Before installation, make sure you do not use PHP provided by macOS. You should 
 3. Install Redis, `brew install redis`
 4. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
 5. Test if Redis server is running `redis-cli ping`, expected response is `PONG`
-6. Install PHP igbinary extension `pecl install igbinary`
 6. Install PHP Redis extension `pecl install redis`. When asked about enabling some supports, answer `no`.
 7. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command, expected response is `OK`
 
 ### Troubleshooting
 
-**Testing which version of PHP you run**
+#### PHP Warning:  PHP Startup: Unable to load dynamic library 'redis.so
+
+If you get something like this:
+
+```shell
+PHP Warning:  PHP Startup: Unable to load dynamic library 'redis.so' (tried: /opt/homebrew/lib/php/pecl/20190902/redis.so (dlopen(/opt/homebrew/lib/php/pecl/20190902/redis.so, 0x0009): tried: '/opt/homebrew/lib/php/pecl/20190902/redis.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/homebrew/lib/php/pecl/20190902/redis.so' (no such file), '/opt/homebrew/lib/php/pecl/20190902/redis.so' (no such file)), /opt/homebrew/lib/php/pecl/20190902/redis.so.so (dlopen(/opt/homebrew/lib/php/pecl/20190902/redis.so.so, 0x0009): tried: '/opt/homebrew/lib/php/pecl/20190902/redis.so.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/homebrew/lib/php/pecl/20190902/redis.so.so' (no such file), '/opt/homebrew/lib/php/pecl/20190902/redis.so.so' (no such file))) in Unknown on line 0
+```
+
+Install [phpredis](https://github.com/phpredis/phpredis) from source:
+
+```
+git clone https://www.github.com/phpredis/phpredis.git
+cd phpredis
+phpize && ./configure && make && sudo make install
+```
+
+Then take copy the outputted library path, it will be something like this: `/opt/homebrew/Cellar/php@7.4/7.4.33_5/pecl/20190902/`.
+
+Run `php --ini` and modify your php.ini with `nano -w /path/to/php.ini`.
+
+Replace `extension="redis.so"` with `extension="/opt/homebrew/Cellar/php@7.4/7.4.33_5/pecl/20190902/redis.so"` where the path is the one you copied. Restart nginx just in case. After this phpredis should work.
+
+#### Testing which version of PHP you run
 
 Test with `php --version` what version of PHP you are using, if the command returns something like `PHP is included in macOS for compatibility with legacy software` and especially when `which php` is showing /usr/bin/php then you are using macOS built-in version (which will be removed in the future anyway) and things most probably won't work as expected.
 
