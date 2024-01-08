@@ -244,7 +244,7 @@ You should now get a log in command line and web interface is available in http:
 
 You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/7.4/php-fpm.d/www.conf` and `/usr/local/etc/php/7.4/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
 
-Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart php@7.4` and nginx with `sudo brew services restart nginx`.
+Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart shivammathur/php/php@7.4` and nginx with `sudo brew services restart nginx`.
 
 ### Certificates for localhost
 
@@ -306,7 +306,7 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
 2. Search pecl `find -L "$(brew --prefix php@7.4)" -name pecl -o -name pear`
 3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.4/bin/pecl /usr/local/bin/pecl`
 4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
-5. Install xdebug `pecl install xdebug`
+5. Install xdebug `pecl install xdebug` (if you're using 7.4, use this version: `pecl install xdebug-3.1.6`)
 6. Check `php --version`, it should display something like this:
 
 ``` shell
@@ -338,7 +338,7 @@ xdebug.log=/var/log/xdebug.log
 
 10. Save and close with <kbd>ctrl</kbd> + <kbd>O</kbd> and <kbd>ctrl</kbd> + <kbd>X</kbd>
 11. Make sure the log exists `sudo touch /var/log/xdebug.log && sudo chmod 777 /var/log/xdebug.log`
-12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service php@7.4 restart && sudo service nginx restart`
+12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service shivammathur/php/php@7.4 restart && sudo service nginx restart`
 13. Install [PHP Debug VSCode plugin](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
 14. Add following to launch.json (<kbd>cmd</kbd> + + <kbd>shift</kbd> + <kbd>P</kbd>, "Open launch.json"):
 
