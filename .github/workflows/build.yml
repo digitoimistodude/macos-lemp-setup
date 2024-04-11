@@ -1,0 +1,11 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  release-osx:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run installer
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh)"
