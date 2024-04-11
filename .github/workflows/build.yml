@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   release-osx:
+    name: macOS Homebrew
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
