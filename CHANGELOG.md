@@ -1,3 +1,8 @@
+### 1.0.8: 2024-04-11
+
+* Add unit tests (GitHub actions) for macOS, Homebrew and install.sh
+* Add build status badge
+
 ### 1.0.7: 2023-05-12
 
 * Fix duplicate symlink for nginx folder
