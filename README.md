@@ -1,5 +1,7 @@
 # LEMP: Local Environment Made Powerful 
-(Just kidding, it's really **Linux + nginx [engine x] + MySQL + PHP-FPM**)
+[![GitHub release](https://img.shields.io/github/tag/digitoimistodude/macos-lemp-setup.svg)](https://github.com/digitoimistodude/macos-lemp-setup/releases) ![GitHub contributors](https://img.shields.io/github/contributors/digitoimistodude/macos-lemp-setup.svg) ![PHP](https://img.shields.io/badge/PHP-7.4-7a86b8)
+
+Just kidding, it's really **Linux + nginx [engine x] + MySQL + PHP-FPM**, that's where the LEMP comes from. MacOS LEMP Setup is just like Local by Flywheel or XAMPP, WAMP, Hammer, Anvil etc. tools like this, but it concentrates on the native way of running a web server just by using native Linux packages ported for macOS via Homebrew. It's always fast, always on.
 
 ## Still the best way to locally develop WordPress.
 
