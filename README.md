@@ -54,8 +54,8 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 ### Features
 
-- PHP 7.4
-- nginx 1.19.2
+- PHP 8.3
+- nginx 1.25.3
 - Super lightweight
 - Native packages
 - Always on system service
@@ -66,14 +66,14 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 ### Requirements
 
 - [Homebrew](https://brew.sh/)
-- macOS, preferably 10.14.2 (Mojave)
+- macOS, preferably 14.2.1 (Sonoma)
 - wget
 - [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Installation
 
 1. Run oneliner installation script `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/digitoimistodude/macos-lemp-setup/master/install.sh)"`
-2. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.4/7.4.23/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php`
+2. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@8.3/8.3.3/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@8.3/8.3.3/bin/php /usr/local/bin/php`
 3. Use PHP path from correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly)
    ``` shell
    export PATH="$(brew --prefix php@8.3)/bin:$PATH"
@@ -88,13 +88,13 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 
 #### PHP config
 
-You may want to add your user and group correctly to `/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf` (or wherever your www.conf is, find with `sudo find / -name 'www.conf'`) and set these to the bottom:
+You may want to add your user and group correctly to `/opt/homebrew/etc/php/8.3/php-fpm.d/www.conf` (or wherever your www.conf is, find with `sudo find / -name 'www.conf'`) and set these to the bottom:
 
 ````
 catch_workers_output = yes
 php_flag[display_errors] = On
-php_admin_value[error_log] = /var/log/fpm7.4-php.www.log 
-slowlog = /var/log/fpm7.4-php.slow.log 
+php_admin_value[error_log] = /var/log/fpm-php.www.log 
+slowlog = /var/log/fpm-php.slow.log 
 php_admin_flag[log_errors] = On
 php_admin_value[memory_limit] = 1024M
 request_slowlog_timeout = 10
@@ -102,7 +102,7 @@ php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
 
-Please note, if the file is not found (as the location may also be something like `/System/Volumes/Data/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf`), you can find the correct location with:
+Please note, if the file is not found (as the location may also be something like `/System/Volumes/Data/opt/homebrew/etc/php/8.3/php-fpm.d/www.conf`), you can find the correct location with:
 
 ```
 sudo find / -name 'www.conf'
@@ -193,14 +193,16 @@ You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0
 
 You should find the correct files and link them like in Linux. This helps you to remember the correct paths.
 
+For example (please note, this is just an example):
+
 ```bash
 sudo mkdir -p /usr/local/bin
-sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/bin/php /usr/local/bin/php
-sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/sbin/php-fpm /usr/local/bin/php-fpm
-sudo ln -s /System/Volumes/Data/opt/homebrew/Cellar/php@7.4/7.4.30/sbin/php-fpm /usr/local/bin/php-fpm
-sudo ln -s /System/Volumes/Data/opt/homebrew/etc/php /etc/php
+sudo ln -s /opt/homebrew/Cellar/php@8.3/8.3.3/bin/php /usr/local/bin/php
+sudo ln -s /opt/homebrew/Cellar/php@8.3/8.3.3/sbin/php-fpm /usr/local/bin/php-fpm
+sudo ln -s /opt/homebrew/Cellar/php@8.3/8.3.3/sbin/php-fpm /usr/local/bin/php-fpm
+sudo ln -s /opt/homebrew/etc/php /etc/php
 sudo ln -s /opt/homebrew/etc/nginx /etc/nginx
-sudo ln -s /System/Volumes/Data/opt/homebrew/etc/my.cnf /etc/my.cnf
+sudo ln -s /opt/homebrew/etc/my.cnf /etc/my.cnf
 ```
 
 ### Use Linux-style aliases
@@ -242,9 +244,9 @@ You should now get a log in command line and web interface is available in http:
 
 ### File sizes
 
-You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/7.4/php-fpm.d/www.conf` and `/usr/local/etc/php/7.4/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
+You might want to increase file sizes for development environment in case you need to test compression plugins and other stuff in WordPress. To do so, edit `/usr/local/etc/php/8.3/php-fpm.d/www.conf` and `/usr/local/etc/php/8.3/php.ini` and change all **memory_limit**, **post_max_size** and **upload_max_filesize** to something that is not so limited, for example **500M**.
 
-Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart shivammathur/php/php@7.4` and nginx with `sudo brew services restart nginx`.
+Please note, you also need to change **client_max_body_size** to the same amount in `/etc/nginx/nginx.conf`. After this, restart php-fpm with `sudo brew services restart php@8.3` and nginx with `sudo brew services restart nginx`.
 
 ### Certificates for localhost
 
@@ -300,14 +302,12 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
 
 1. Check your PHP version with `php --version` and location with `which php`. If the location points to `/usr/bin/php`, you are mistakenly using macOS built-in PHP. Change PHP path to correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly):
    ``` shell
-   export PATH="$(brew --prefix php@7.2)/bin:$PATH"
-   export PATH="$(brew --prefix php@7.3)/bin:$PATH"
-   export PATH="$(brew --prefix php@7.4)/bin:$PATH"
+   export PATH="$(brew --prefix php@8.3)/bin:$PATH"
    ```
-2. Search pecl `find -L "$(brew --prefix php@7.4)" -name pecl -o -name pear`
-3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@7.4/bin/pecl /usr/local/bin/pecl`
+2. Search pecl `find -L "$(brew --prefix php@8.3)" -name pecl -o -name pear`
+3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@8.3/bin/pecl /usr/local/bin/pecl`
 4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
-5. Install xdebug `pecl install xdebug` (if you're using 7.4, use this version: `pecl install xdebug-3.1.6`)
+5. Install xdebug `pecl install xdebug` (if you're using 8.3, use this version: `pecl install xdebug-3.1.6`)
 6. Check `php --version`, it should display something like this:
 
 ``` shell
@@ -339,7 +339,7 @@ xdebug.log=/var/log/xdebug.log
 
 10. Save and close with <kbd>ctrl</kbd> + <kbd>O</kbd> and <kbd>ctrl</kbd> + <kbd>X</kbd>
 11. Make sure the log exists `sudo touch /var/log/xdebug.log && sudo chmod 777 /var/log/xdebug.log`
-12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service shivammathur/php/php@7.4 restart && sudo service nginx restart`
+12. Restart services (requires [Linux-style aliases](#use-linux-style-aliases)) `sudo service php@8.3 restart && sudo service nginx restart`
 13. Install [PHP Debug VSCode plugin](https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug)
 14. Add following to launch.json (<kbd>cmd</kbd> + + <kbd>shift</kbd> + <kbd>P</kbd>, "Open launch.json"):
 
@@ -454,7 +454,7 @@ Name       Status  User  Plist
 dnsmasq    started root  /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 mariadb    started rolle /Users/rolle/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
 nginx      started root  /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
-php@7.4    started root  /Library/LaunchDaemons/homebrew.mxcl.php@7.4.plist
+php        started root  /Library/LaunchDaemons/homebrew.mxcl.php@8.3.plist
 ```
 
 You may have "unknown" or "error" as status or different PHP version, that is not a problem if ther server runs. **User** should be like in the list above. Then everything should work.
@@ -572,7 +572,7 @@ GRANT ALL PRIVILEGES ON *.* TO root@127.0.0.1 IDENTIFIED BY 'YOUR_MYSQL_ROOT_PAS
 
 If you are getting permission denied by nginx, you need to make sure your php-fpm and nginx are running on the same user. This is stricter on MacBook Pro M1.
 
-Open `/opt/homebrew/etc/php/7.4/php-fpm.d/www.conf` and change the user, group and listen to following:
+Open `/opt/homebrew/etc/php/8.3/php-fpm.d/www.conf` and change the user, group and listen to following:
 
 ```ini
 user = your_username
