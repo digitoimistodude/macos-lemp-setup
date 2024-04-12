@@ -3,6 +3,7 @@
 * Add unit tests (GitHub actions) for macOS, Homebrew and install.sh
 * Add build status badge
 * Rewrite install.sh for PHP 8.3, use variables instead of hardcoded paths and versions
+* PHP 8.3 support
 
 ### 1.0.7: 2023-05-12
 
