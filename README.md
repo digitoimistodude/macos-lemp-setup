@@ -76,13 +76,11 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 2. Link PHP executable like this: **Run:** `sudo find / -name 'php'`. When you spot link that looks like this (yours might be different version) */usr/local/Cellar/php@7.4/7.4.23/bin/php*, symlink it to correct location to override MacOS's own file: `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php`
 3. Use PHP path from correct location by adding to your ~/.bash_profile file, `sudo nano ~/.bash_profile` (change your PHP version accordingly)
    ``` shell
-   export PATH="$(brew --prefix php@7.2)/bin:$PATH"
-   export PATH="$(brew --prefix php@7.3)/bin:$PATH"
-   export PATH="$(brew --prefix php@7.4)/bin:$PATH"
+   export PATH="$(brew --prefix php@8.3)/bin:$PATH"
    ```
 4. Check the version with `php --version`, it should match the linked file.
 5. Brew should have already handled other links, you can test the correct versions with `sudo mysql --version` (if it's something like _mysql  Ver 15.1 Distrib 10.5.5-MariaDB, for osx10.15 (x86_64) using readline 5.1_ it's the correct one) and `sudo nginx -v` (if it's something like nginx version: nginx/1.19.3 it's the correct one)
-6. Add `export PATH="$(brew --prefix php@7.4)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
+6. Add `export PATH="$(brew --prefix php@8.3)/bin:$PATH"` to .bash_profile (or to your zsh profile or to whatever term profile you are currently using)
 7. Go through [post installations](#post-installations)
 8. Enjoy! If you use [dudestack](https://github.com/digitoimistodude/dudestack), please check instructions from [its own repo](https://github.com/digitoimistodude/dudestack).
 
@@ -314,11 +312,11 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
 
 ``` shell
 $ php --version
-PHP 7.4.23 (cli) (built: Aug 27 2021 09:20:14) ( NTS )
+PHP 8.3.3 (cli) (built: Feb 13 2024 15:41:14) (NTS)
 Copyright (c) The PHP Group
-Zend Engine v3.4.0, Copyright (c) Zend Technologies
-    with Xdebug v3.0.3, Copyright (c) 2002-2021, by Derick Rethans
-    with Zend OPcache v7.4.23, Copyright (c), by Zend Technologies
+Zend Engine v4.3.3, Copyright (c) Zend Technologies
+    with Xdebug v3.3.1, Copyright (c) 2002-2023, by Derick Rethans
+    with Zend OPcache v8.3.3, Copyright (c), by Zend Technologies
 ```
 
 7. Check where your php.ini file is with `php --ini`
@@ -418,17 +416,23 @@ cd phpredis
 phpize && ./configure && make && sudo make install
 ```
 
-Then take copy the outputted library path, it will be something like this: `/opt/homebrew/Cellar/php@7.4/7.4.33_5/pecl/20190902/`.
+Then take copy the outputted library path, it will be something like this: `/opt/homebrew/Cellar/php@8.3/8.3.3/pecl/20190902/`.
 
 Run `php --ini` and modify your php.ini with `nano -w /path/to/php.ini`.
 
-Replace `extension="redis.so"` with `extension="/opt/homebrew/Cellar/php@7.4/7.4.33_5/pecl/20190902/redis.so"` where the path is the one you copied. Restart nginx just in case. After this phpredis should work.
+Replace `extension="redis.so"` with `extension="/opt/homebrew/Cellar/php@8.3/8.3.3/pecl/20190902/redis.so"` where the path is the one you copied. Restart nginx just in case. After this phpredis should work.
 
 #### Testing which version of PHP you run
 
 Test with `php --version` what version of PHP you are using, if the command returns something like `PHP is included in macOS for compatibility with legacy software` and especially when `which php` is showing /usr/bin/php then you are using macOS built-in version (which will be removed in the future anyway) and things most probably won't work as expected.
 
-To fix this, run command `sudo ln -s /usr/local/Cellar/php@7.4/7.4.23/bin/php /usr/local/bin/php` which symlinks the homebrew version to be used instead of macOS version OR use bashrc export as defined [here in step 4](https://github.com/digitoimistodude/macos-lemp-setup#installation).
+To fix this, first find the PHP:
+
+```bash
+sudo find / -name 'php'
+```
+
+Look for the bin under Cellar or homebrew dirs. Then run command with your php bin, for example: `sudo ln -s /usr/local/Cellar/php@8.3/8.3.3/bin/php /usr/local/bin/php`. This symlinks the homebrew version to be used instead of macOS version OR use bashrc export as defined [here in step 4](https://github.com/digitoimistodude/macos-lemp-setup#installation).
 
 #### PHP or mysql not working at all
 
