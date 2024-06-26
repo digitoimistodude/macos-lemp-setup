@@ -1,3 +1,8 @@
+### 1.0.9: 2024-06-26
+
+* Make sure folders exist
+* More verbose output for the install script
+
 ### 1.0.8: 2024-04-12
 
 * Add unit tests (GitHub actions) for macOS, Homebrew and install.sh

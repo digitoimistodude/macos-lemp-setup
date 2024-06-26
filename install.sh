@@ -9,7 +9,7 @@ YELLOW=$(tput setaf 3)
 GREEN=$(tput setaf 2)
 TXTRESET=$(tput sgr0)
 
-echo "${YELLOW}Getting dependencies.${TXTRESET}"
+echo "${YELLOW}Getting dependencies...${TXTRESET}"
 
 # Attempt to install Xcode Command Line Tools
 xcode-select --install
@@ -33,7 +33,7 @@ curl -IL http://127.0.0.1:80
 echo "${BOLDGREEN}nginx installed and running.${TXTRESET}"
 
 # Set up nginx and paths
-echo "${YELLOW}Setting up nginx.${TXTRESET}"
+echo "${YELLOW}Setting up nginx...${TXTRESET}"
 
 # Chec if /etc/nginx exists
 if [ -d "/etc/nginx" ]; then
@@ -54,6 +54,8 @@ else
   sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/sites-available"
   sudo chmod -R 775 "${HOMEBREW_PATH}/etc/nginx/global"
 fi
+
+echo "${YELLOW}Creating default nginx configurations...${TXTRESET}"
 
 # Create default nginx configuration
 sudo echo "user $(whoami) staff;
@@ -107,6 +109,8 @@ http {
   include ${HOMEBREW_PATH}/etc/nginx/sites-enabled/*;
 }" > "${HOMEBREW_PATH}/etc/nginx/nginx.conf"
 
+echo "${YELLOW}Creating locations for logs...${TXTRESET}"
+
 # Check if nginx log dir exists
 if [ -d "/var/log/nginx" ]; then
   echo "${YELLOW}Directory /var/log/nginx exists.${TXTRESET}"
@@ -118,6 +122,8 @@ else
   sudo touch /var/log/nginx/error.log
   sudo chmod 777 /var/log/nginx/error.log
 fi
+
+echo "${YELLOW}Creating default PHP/nginx configurations...${TXTRESET}"
 
 # Create default php configuration
 sudo echo "location ~ \.php\$ {
@@ -134,6 +140,8 @@ sudo echo "location ~ \.php\$ {
   fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
   fastcgi_pass 127.0.0.1:9000;
 }" > "${HOMEBREW_PATH}/etc/nginx/php.conf"
+
+echo "${YELLOW}Creating default WordPress-related nginx configurations...${TXTRESET}"
 
 # Create default WordPress-related nginx configuration
 sudo echo "# WordPress single site rules.
@@ -166,6 +174,8 @@ location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|pn
   expires max;
 }" > "${HOMEBREW_PATH}/etc/nginx/global/wordpress.conf"
 
+echo "${YELLOW}Creating default site vhost...${TXTRESET}"
+
 # Create default site configuration
 sudo echo "server {
   listen 80 default_server;
@@ -176,8 +186,22 @@ sudo echo "server {
   include global/wordpress.conf;
 }" > "${HOMEBREW_PATH}/etc/nginx/sites-available/default"
 
+echo "${YELLOW}Symlinking the default vhost...${TXTRESET}"
+
 # Symlink the default site configuration
 sudo ln -sfnv ${HOMEBREW_PATH}/etc/nginx/sites-available/default ${HOMEBREW_PATH}/etc/nginx/sites-enabled/default
+
+echo "${YELLOW}Making sure /var/www exists and is linked to project directory...${TXTRESET}"
+
+# Check if /var/www exists
+if [ -d "/var/www" ]; then
+  echo "${YELLOW}Directory /var/www exists.${TXTRESET}"
+else
+  echo "${YELLOW}Directory /var/www does not exist. Symlinking $HOME/Projects to it.${TXTRESET}"
+  sudo ln -sfnv $HOME/Projects /var/www
+fi
+
+echo "${YELLOW}Copying default nginx index to the project dir...${TXTRESET}"
 
 # Figure out the nginx correct installation path
 NGINX_VERSION=$(nginx -v 2>&1 | grep -o '[0-9.]*')
@@ -187,11 +211,13 @@ NGINX_HOMEBREW_VERSION_PATH=$(find $NGINX_HOMEBREW_PATH -name $NGINX_VERSION -ty
 # Copy the default index.html to the nginx root
 sudo cp "${NGINX_HOMEBREW_VERSION_PATH}/html/index.html /var/www/"
 
+echo "${YELLOW}Setting permissions...${TXTRESET}"
+
 # Set the correct permissions
 sudo chown -R $(whoami):staff /var/www
 
 # Install PHP
-echo "${YELLOW}Installing PHP.${TXTRESET}"
+echo "${YELLOW}Installing PHP...${TXTRESET}"
 
 # This part is the same than in here:
 # Install and use PHP $PHP_VERSION in your local macos-lemp-setup environment
@@ -225,18 +251,18 @@ sudo brew services start php@${PHP_VERSION}
 echo "${BOLDGREEN}PHP installed and running.${TXTRESET}"
 
 # Install MariaDB
-echo "${YELLOW}Installing MariaDB.${TXTRESET}"
+echo "${YELLOW}Installing MariaDB...${TXTRESET}"
 brew install mariadb
 brew services start mariadb
 echo "${BOLDGREEN}MariaDB installed and running.${TXTRESET}"
 
 # Install MailHog
-echo "${YELLOW}Installing MailHog.${TXTRESET}"
+echo "${YELLOW}Installing MailHog...${TXTRESET}"
 brew update && brew install mailhog
 echo "${BOLDGREEN}MailHog installed (run mailhog to start mail server).${TXTRESET}"
 
 # Install DNSmasq
-echo "${YELLOW}Installing DNSmasq.${TXTRESET}"
+echo "${YELLOW}Installing DNSmasq...${TXTRESET}"
 brew install dnsmasq
 curl -L https://gist.githubusercontent.com/dtomasi/ab76d14338db82ec24a1fc137caff75b/raw/550c84393c4c1eef8a3e68bb720df561b5d3f175/dnsmasq.conf -o /usr/local/etc/dnsmasq.conf
 sudo curl -L https://gist.githubusercontent.com/dtomasi/ab76d14338db82ec24a1fc137caff75b/raw/550c84393c4c1eef8a3e68bb720df561b5d3f175/dev -o /etc/resolver/dev
