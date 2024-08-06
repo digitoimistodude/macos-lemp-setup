@@ -304,11 +304,11 @@ Test with `sudo nginx -t` and if everything is OK, restart nginx.
    ``` shell
    export PATH="$(brew --prefix php@8.3)/bin:$PATH"
    ```
-2. Search pecl `find -L "$(brew --prefix php@8.3)" -name pecl -o -name pear`
-3. Symlink pecl based on result, for example `sudo ln -s /usr/local/opt/php@8.3/bin/pecl /usr/local/bin/pecl`
-4. Add executable permissions `sudo chmod +x /usr/local/bin/pecl`
-5. Install xdebug `pecl install xdebug` (if you're using 8.3, use this version: `pecl install xdebug-3.1.6`)
-6. Check `php --version`, it should display something like this:
+2. Install xdebug
+
+```bash
+brew install shivammathur/extensions/xdebug@8.3
+```
 
 ``` shell
 $ php --version
