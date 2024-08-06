@@ -3,6 +3,11 @@
 
 Just kidding, it's really **Linux + nginx [engine x] + MySQL + PHP-FPM**, that's where the LEMP comes from. MacOS LEMP Setup is just like Local by Flywheel or XAMPP, WAMP, Hammer, Anvil etc. tools like this, but it concentrates on the native way of running a web server just by using native Linux packages ported for macOS via Homebrew. It's always fast, always on.
 
+## LEMP on other systems
+
+- [Windows version](https://github.com/digitoimistodude/windows-lemp-setup)
+- [Linux version](https://github.com/raikasdev/pop-lemp-setup)
+
 ## Still the best way to locally develop WordPress.
 
 ![macos-lemp](https://user-images.githubusercontent.com/1534150/159696251-1b8adbee-f752-4107-9183-78107ffb4969.png)
@@ -61,7 +66,6 @@ Read the full story by [@ronilaukkarinen](https://github.com/ronilaukkarinen): *
 - Always on system service
 - HTTPS support
 - Consistent with production setup
-- Works even [on Windows](https://github.com/digitoimistodude/windows-lemp-setup)
 
 ### Requirements
 
