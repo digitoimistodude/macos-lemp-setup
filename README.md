@@ -324,7 +324,6 @@ Zend Engine v4.3.3, Copyright (c) Zend Technologies
 9. Make sure these are on the first lines:
 
 ```
-zend_extension="xdebug.so"
 xdebug.mode=develop
 xdebug.client_port=9003
 xdebug.client_host=127.0.0.1
