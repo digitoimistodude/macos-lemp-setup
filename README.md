@@ -398,7 +398,7 @@ Before installation, make sure you do not use PHP provided by macOS. You should 
 3. Install Redis, `brew install redis`
 4. Start Redis `brew services start redis`, this will also make sure that Redis is always started on reboot
 5. Test if Redis server is running `redis-cli ping`, expected response is `PONG`
-6. Install PHP Redis extension `pecl install redis`. When asked about enabling some supports, answer `no`.
+6. Install PHP Redis extension `pecl install redis`.
 7. Restart nginx and php-redis should be available, you can test it with `php -r "if (new Redis() == true){ echo \"\r\n OK \r\n\"; }"` command, expected response is `OK`
 
 ### Troubleshooting
