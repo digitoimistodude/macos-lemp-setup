@@ -230,6 +230,9 @@ brew tap shivammathur/extensions
 # Install the PHP we need
 brew install shivammathur/php/php@${PHP_VERSION}
 
+# Pin package to avoid accidental upgrades later
+brew pin php@${PHP_VERSION}
+
 # Link PHP CLI executable as `php`
 brew link --overwrite --force shivammathur/php/php@${PHP_VERSION}
 
